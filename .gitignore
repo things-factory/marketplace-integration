@@ -1,0 +1,14 @@
+dist-client/
+dist-server/
+node_modules/
+logs/
+licenses/
+attachments/
+ormconfig.js
+yarn*.*
+package-lock.json
+config.development.*
+config.production.*
+db.sqlite
+.DS_Store
+.vscode

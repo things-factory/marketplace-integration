@@ -1,0 +1,92 @@
+body {
+  --header-bar-background-color: var(--primary-color);
+  --header-bar-icon-size: var(--icon-default-size);
+  --header-bar-title: bold 16px var(--theme-font);
+  --header-bar-color: #fff;
+  --header-bar-height: 45px;
+  --header-bar-item-padding: 0px 5px 0 0;
+
+  --nav-bar-background-color: #fff;
+
+  --group-bar-background-color: var(--primary-color);
+  --group-bar-textbutton: 16px/32px var(--theme-font);
+  --group-bar-textbutton-active: bold var(--group-bar-textbutton);
+  --group-bar-active-line-color: var(--focus-color);
+  --group-bar-line: solid 3px rgba(0, 0, 0, 0.2);
+
+  --aside-background-color: var(--secondary-background-color);
+  --aside-list-textbtton: 18px var(--theme-font);
+  --aside-list-icon: var(--icon-default-size);
+  --aside-list-bottom-line: var(--border-dark-color);
+  --aside-list-detail-background-color: #fff;
+  --aside-list-detail-text: 14px var(--primary-background-color);
+
+  --footer-bar-border-top: 1px solid rgba(0, 0, 0, 0.2);
+
+  --button-container-margin: inintial;
+  --button-container-padding: 0 0 12px 0;
+  --button-container-background: transparent;
+  --button-container-height: initial;
+  --button-container-align: center;
+  --button-container-button-background-color: var(--secondary-color);
+  --button-container-button-border-radius: var(--button-border-radius);
+  --button-container-button-margin: var(--button-margin);
+  --button-container-button-font: var(--button-font);
+  --button-container-button-height: initial;
+  --button-container-button-border: var(--button-border);
+
+  --popup-content-background-color: var(--main-section-background-color);
+  --popup-content-padding: 10px 20px;
+
+  /* components - floating overlay style */
+  --overlay-center-small-width: 30%;
+  --overlay-center-small-height: 30%;
+  --overlay-center-normal-width: 50%;
+  --overlay-center-normal-height: 50%;
+  --overlay-center-large-width: 75%;
+  --overlay-center-large-height: 75%;
+  --overlay-header-height: var(--header-bar-height);
+  --overlay-header-background-color: var(--header-bar-background-color);
+  --overlay-header-color: #fff;
+  --overlay-header-font: var(--header-bar-title);
+  --overlay-background-color: rgba(0, 0, 0, 0.5);
+  --overlay-margin-bottom: 0px;
+
+  /* components - resize splitter style */
+  --splitter-background-color: rgba(0, 0, 0, 0.1);
+  --splitter-hover-background-color: var(--primary-color);
+}
+
+@media only screen and (max-width: 460px) {
+  body {
+    --button-container-margin: 0 -15px;
+    --button-container-padding: 0 0 0 0;
+    --button-container-background: #586272;
+    --button-container-height: 50px;
+    --button-container-align: right;
+    --button-container-button-background-color: transparent;
+    --button-container-button-border-radius: 0;
+    --button-container-button-margin: 0;
+    --button-container-button-font: normal 17px var(--theme-font);
+    --button-container-button-height: 50px;
+    --button-container-button-border: 1px solid rgba(0, 0, 0, 0.1);
+
+    --overlay-center-small-width: 100%;
+    --overlay-center-small-height: 100%;
+    --overlay-center-normal-width: 100%;
+    --overlay-center-normal-height: 100%;
+    --overlay-center-large-width: 100%;
+    --overlay-center-large-height: 100%;
+  }
+}
+
+@media (min-width: 461px) and (max-width: 1024px) {
+  body {
+    --overlay-center-small-width: 40%;
+    --overlay-center-small-height: 40%;
+    --overlay-center-normal-width: 60%;
+    --overlay-center-normal-height: 60%;
+    --overlay-center-large-width: 80%;
+    --overlay-center-large-height: 80%;
+  }
+}
