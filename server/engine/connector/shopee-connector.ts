@@ -3,7 +3,7 @@ import ShopeeApi from 'shopee-api'
 
 import { config } from '@things-factory/env'
 const shopeeConfig = config.get('market-platform-shopee', {})
-const { partnerId, partnerKey } = shopeeConfig
+const { partnerId, partnerKey, isUAT } = shopeeConfig
 
 export class ShopeeConnector implements Connector {
   async ready(connectionConfigs) {
@@ -15,9 +15,10 @@ export class ShopeeConnector implements Connector {
   async connect(connection) {
     var { name, endpoint: url, params: { shopId } = { shopId: '' } } = connection
 
+    Connections.logger.info(`shopee config: ${partnerId}, ${partnerKey}`)
     const client = new ShopeeApi({
-      isUAT: false,
-      shopid: shopId,
+      isUAT: isUAT,
+      shopid: Number(shopId),
       partner_id: partnerId,
       partner_key: partnerKey,
       redirect_uri: 'http://localhost:3000/callback', // callback url when perform OAuth
@@ -25,8 +26,8 @@ export class ShopeeConnector implements Connector {
       verbose: false
     })
 
-    const { access_token } = await client.generateAccessToken({ code: '0_120961_s2JCjKDb4ZHFcOKBgvPp2A5f42668' })
-    client.accessToken = access_token
+    // const { access_token } = await client.generateAccessToken({ code: '0_120961_s2JCjKDb4ZHFcOKBgvPp2A5f42668' })
+    // client.accessToken = access_token
 
     Connections.addConnection(name, client)
 
@@ -45,11 +46,6 @@ export class ShopeeConnector implements Connector {
         type: 'string',
         label: 'shop-id',
         name: 'shopId'
-      },
-      {
-        type: 'string',
-        label: 'app-secret',
-        name: 'appSecret'
       }
     ]
   }

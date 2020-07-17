@@ -1,6 +1,8 @@
 import { Connections, TaskRegistry } from '@things-factory/integration-base'
 import { access } from '@things-factory/utils'
 
+// const SHOPEE_URL_PREFIX = 'https://partner.shopeemobile.com/api/v1'
+
 async function ShopeePost(step, { logger, data }) {
   var {
     connection,
@@ -12,10 +14,8 @@ async function ShopeePost(step, { logger, data }) {
     throw new Error(`no connection : ${connection}`)
   }
 
-  var response = await client.post(path, {})
-
   return {
-    data: await response.json()
+    data: await client.post(path, accessor ? access(accessor) : {})
   }
 }
 
@@ -24,7 +24,9 @@ ShopeePost.parameterSpec = [
     type: 'select',
     name: 'path',
     label: 'path',
-    options: ['/shop/get_partner_shop']
+    property: {
+      options: ['/shop/get_partner_shop', '/shop_categorys/get']
+    }
   },
   {
     type: 'string',
