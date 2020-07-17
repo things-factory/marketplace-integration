@@ -8,6 +8,7 @@ module.exports = {
   },
   'market-platform-shopee': {
     platform: 'shopee',
+    isUAT: false,
     application: 'Operato MMS',
     partnerId: '888888',
     partnerKey: 'qqqqqqqq'
