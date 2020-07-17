@@ -15,7 +15,7 @@ export const Mutation = `
 
   generateShopeeAccessToken (
     id: String!
-    code: String!,
+    code: String!
     shopId: String!
   ): BizplacePlatform
 
@@ -27,6 +27,10 @@ export const Mutation = `
   updateMultipleBizplacePlatform (
     patches: [BizplacePlatformPatch]!
   ): [BizplacePlatform]
+
+  deactivateBizplacePlatform (
+    name: String!
+  ): BizplacePlatform
 
   deleteBizplacePlatform (
     name: String!
@@ -40,6 +44,10 @@ export const Mutation = `
 export const Query = `
   bizplacePlatforms(filters: [Filter], pagination: Pagination, sortings: [Sorting]): BizplacePlatformList
   bizplacePlatform(id: String!): BizplacePlatform
+  getShopeeAuthURL (
+    id: String!
+    redirectUrl: String!
+  ): String
 `
 
 export const Types = [BizplacePlatform, NewBizplacePlatform, BizplacePlatformPatch, BizplacePlatformList]

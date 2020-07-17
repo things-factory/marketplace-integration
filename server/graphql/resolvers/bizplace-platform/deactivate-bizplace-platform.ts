@@ -1,12 +1,20 @@
 import { getRepository } from 'typeorm'
 import { BizplacePlatform } from '../../../entities'
 
-export const updateBizplacePlatform = {
-  async updateBizplacePlatform(_: any, { name, patch }, context: any) {
+export const deactivateBizplacePlatform = {
+  async deactivateBizplacePlatform(_: any, { name }, context: any) {
     const repository = getRepository(BizplacePlatform)
     const bizplacePlatform = await repository.findOne({
       where: { domain: context.state.domain, name }
     })
+
+    var patch = {
+      accessToken: '',
+      refreshToken: '',
+      accessInfo: '',
+      countryCode: '',
+      status: 'inactive'
+    }
 
     return await repository.save({
       ...bizplacePlatform,

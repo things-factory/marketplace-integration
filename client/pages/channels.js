@@ -81,10 +81,17 @@ class IntegrationChannels extends localize(i18next)(PageView) {
         {
           type: 'gutter',
           gutterName: 'button',
-          icon: 'reorder',
+          icon: record => (!record ? 'link' : record.status == 'active' ? 'link_off' : 'link'),
           handlers: {
             click: (columns, data, column, record, rowIndex) => {
-              navigate(`marketplace-channel-lazada/${record.id}`)
+              if (!record || !record.name || record.__dirty__ == '+') {
+                return
+              }
+              if (record.status !== 'active') {
+                this.activate(record)
+              } else {
+                this.deactivate(record)
+              }
             }
           }
         },
@@ -314,6 +321,45 @@ class IntegrationChannels extends localize(i18next)(PageView) {
 
       if (!response.errors) this.dataGrist.fetch()
     }
+  }
+
+  async activate(record) {
+    switch (record.platform) {
+      case 'lazada':
+        navigate(`marketplace-channel-lazada/${record.id}`)
+        break
+      case 'shopee':
+        navigate(`marketplace-channel-shopee/${record.id}`)
+        break
+    }
+  }
+
+  async deactivate(record) {
+    var response = await client.mutate({
+      mutation: gql`
+        mutation($name: String!) {
+          deactivateBizplacePlatform(name: $name) {
+            status
+          }
+        }
+      `,
+      variables: {
+        name: record.name
+      }
+    })
+
+    var status = response.data.deactivateBizplacePlatform.status
+
+    this.dataGrist.fetch()
+
+    document.dispatchEvent(
+      new CustomEvent('notify', {
+        detail: {
+          level: 'info',
+          message: `${status == 'active' ? 'fail' : 'success'} to deactivate : ${record.name}`
+        }
+      })
+    )
   }
 }
 

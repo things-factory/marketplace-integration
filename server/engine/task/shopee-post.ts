@@ -15,7 +15,7 @@ async function ShopeePost(step, { logger, data }) {
   }
 
   return {
-    data: await client.post(path, accessor ? access(accessor) : {})
+    data: (await client.post(path, accessor ? access(accessor) : {})).body
   }
 }
 
@@ -25,7 +25,7 @@ ShopeePost.parameterSpec = [
     name: 'path',
     label: 'path',
     property: {
-      options: ['/shop/get_partner_shop', '/shop_categorys/get']
+      options: ['/shop/get_partner_shop', '/shop_categorys/get', '/orders/basics']
     }
   },
   {

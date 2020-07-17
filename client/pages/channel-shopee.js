@@ -21,19 +21,21 @@ class ChannelShopee extends connect(store)(PageView) {
     return {
       id: String,
       bizplacePlatform: Object,
+      authURL: String,
+      shopId: String,
       code: String
     }
   }
 
   get context() {
     return {
-      title: 'channel lazada'
+      title: 'channel Shopee'
     }
   }
 
   render() {
     var { name = '', status = '', countryCode = '', accessInfo = '' } = this.bizplacePlatform || {}
-    var clientId = '843461'
+    console.log('authURL', this.authURL)
 
     return html`
       <a href="marketplace-channels">Channels</a>
@@ -48,11 +50,10 @@ class ChannelShopee extends connect(store)(PageView) {
       <div>
         <label>auth-code</label>
         <input type="text" .value=${this.code || ''} disabled />
+        <label>shop ID</label>
+        <input type="text" .value=${this.shopId || ''} disabled />
 
-        <a
-          href=${`https://auth.lazada.com/oauth/authorize?response_type=code&force_auth=true&redirect_uri=${location.href}&client_id=${clientId}`}
-          >get code</a
-        >
+        <a href=${this.authURL}>bind</a>
       </div>
 
       <div>
@@ -67,14 +68,15 @@ class ChannelShopee extends connect(store)(PageView) {
 
   async pageUpdated(changes, after, before) {
     if (changes.params) {
-      var { code } = changes.params
+      var { code, shop_id } = changes.params
       this.code = code
+      this.shopId = shop_id
     }
 
     if (changes.resourceId) {
       this.id = changes.resourceId
 
-      const response = await client.query({
+      var response = await client.query({
         query: gql`
           query($id: String!) {
             bizplacePlatform(id: $id) {
@@ -93,30 +95,45 @@ class ChannelShopee extends connect(store)(PageView) {
       })
 
       this.bizplacePlatform = response.data.bizplacePlatform
+
+      response = await client.query({
+        query: gql`
+          query($id: String!, $redirectUrl: String!) {
+            getShopeeAuthURL(id: $id, redirectUrl: $redirectUrl)
+          }
+        `,
+        variables: {
+          id: this.id,
+          redirectUrl: location.href
+        }
+      })
+
+      this.authURL = response.data.getShopeeAuthURL
     }
   }
 
   async generateAPIToken() {
     const response = await client.mutate({
       mutation: gql`
-        mutation($id: String!, $code: String!) {
-          generateLazadaAccessToken(id: $id, code: $code) {
+        mutation($id: String!, $code: String!, $shopId: String!) {
+          generateShopeeAccessToken(id: $id, code: $code, shopId: $shopId) {
             name
             description
             platform
             countryCode
-            status
             accessInfo
+            status
           }
         }
       `,
       variables: {
         id: this.id,
-        code: this.code
+        code: this.code,
+        shopId: this.shopId
       }
     })
 
-    this.bizplacePlatform = response.data.generateLazadaAccessToken
+    this.bizplacePlatform = response.data.generateShopeeAccessToken
   }
 }
 

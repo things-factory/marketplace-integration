@@ -21,13 +21,8 @@ export class ShopeeConnector implements Connector {
       shopid: Number(shopId),
       partner_id: partnerId,
       partner_key: partnerKey,
-      redirect_uri: 'http://localhost:3000/callback', // callback url when perform OAuth
-      webhook_url: 'http://localhost:3000/webhook',
       verbose: false
     })
-
-    // const { access_token } = await client.generateAccessToken({ code: '0_120961_s2JCjKDb4ZHFcOKBgvPp2A5f42668' })
-    // client.accessToken = access_token
 
     Connections.addConnection(name, client)
 

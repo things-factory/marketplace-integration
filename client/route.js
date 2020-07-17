@@ -10,5 +10,9 @@ export default function route(page) {
     case 'marketplace-channel-lazada':
       import('./pages/channel-lazada')
       return page
+
+    case 'marketplace-channel-shopee':
+      import('./pages/channel-shopee')
+      return page
   }
 }

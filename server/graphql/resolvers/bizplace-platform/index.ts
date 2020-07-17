@@ -1,8 +1,10 @@
 import { bizplacePlatformResolver } from './bizplace-platform'
 import { bizplacePlatformsResolver } from './bizplace-platforms'
+import { getShopeeAuthURL } from './get-shopee-auth-url'
 
-import { updateBizplacePlatform } from './update-bizplace-platform'
+import { deactivateBizplacePlatform } from './deactivate-bizplace-platform'
 import { updateMultipleBizplacePlatform } from './update-multiple-bizplace-platform'
+import { updateBizplacePlatform } from './update-bizplace-platform'
 import { createBizplacePlatform } from './create-bizplace-platform'
 import { deleteBizplacePlatform } from './delete-bizplace-platform'
 import { deleteBizplacePlatforms } from './delete-bizplace-platforms'
@@ -11,7 +13,8 @@ import { generateShopeeAccessToken } from './generate-shopee-access-token'
 
 export const Query = {
   ...bizplacePlatformsResolver,
-  ...bizplacePlatformResolver
+  ...bizplacePlatformResolver,
+  ...getShopeeAuthURL
 }
 
 export const Mutation = {
@@ -19,6 +22,7 @@ export const Mutation = {
   ...generateShopeeAccessToken,
   ...updateBizplacePlatform,
   ...updateMultipleBizplacePlatform,
+  ...deactivateBizplacePlatform,
   ...createBizplacePlatform,
   ...deleteBizplacePlatform,
   ...deleteBizplacePlatforms

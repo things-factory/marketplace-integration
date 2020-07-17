@@ -11,6 +11,10 @@ export default {
     {
       tagname: 'marketplace-channel-lazada',
       page: 'marketplace-channel-lazada'
+    },
+    {
+      tagname: 'marketplace-channel-shopee',
+      page: 'marketplace-channel-shopee'
     }
   ],
   bootstrap
