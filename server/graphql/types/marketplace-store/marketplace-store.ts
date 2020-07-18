@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-export const BizplacePlatform = gql`
-  type BizplacePlatform {
+export const MarketplaceStore = gql`
+  type MarketplaceStore {
     id: String
     name: String
     domain: Domain

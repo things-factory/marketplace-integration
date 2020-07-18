@@ -1,11 +1,11 @@
 import { ListParam, convertListParams } from '@things-factory/shell'
 import { getRepository } from 'typeorm'
-import { BizplacePlatform } from '../../../entities'
+import { MarketplaceStore } from '../../../entities'
 
-export const bizplacePlatformsResolver = {
-  async bizplacePlatforms(_: any, params: ListParam, context: any) {
+export const marketplaceStoresResolver = {
+  async marketplaceStores(_: any, params: ListParam, context: any) {
     const convertedParams = convertListParams(params)
-    const [items, total] = await getRepository(BizplacePlatform).findAndCount({
+    const [items, total] = await getRepository(MarketplaceStore).findAndCount({
       ...convertedParams,
       relations: ['domain', 'creator', 'updater']
     })

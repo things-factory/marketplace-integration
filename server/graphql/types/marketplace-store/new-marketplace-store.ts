@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-export const NewBizplacePlatform = gql`
-  input NewBizplacePlatform {
+export const NewMarketplaceStore = gql`
+  input NewMarketplaceStore {
     name: String!
     description: String
     platform: String!

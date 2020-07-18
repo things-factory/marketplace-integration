@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm'
-import { BizplacePlatform } from '../../../entities'
+import { MarketplaceStore } from '../../../entities'
 import ShopeeApi from 'shopee-api'
 
 import { config } from '@things-factory/env'
@@ -8,8 +8,8 @@ const { partnerId, partnerKey, isUAT } = shopeeConfig
 
 export const getShopeeAuthURL = {
   async getShopeeAuthURL(_: any, { id, redirectUrl }, context: any) {
-    const repository = getRepository(BizplacePlatform)
-    const bizplacePlatform = await repository.findOne({
+    const repository = getRepository(MarketplaceStore)
+    const marketplaceStore = await repository.findOne({
       where: { domain: context.state.domain, id }
     })
 

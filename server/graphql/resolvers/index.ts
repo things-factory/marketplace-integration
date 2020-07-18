@@ -1,5 +1,5 @@
-import * as BizplacePlatform from './bizplace-platform'
+import * as MarketplaceStore from './marketplace-store'
 
-export const queries = [BizplacePlatform.Query]
+export const queries = [MarketplaceStore.Query]
 
-export const mutations = [BizplacePlatform.Mutation]
+export const mutations = [MarketplaceStore.Mutation]

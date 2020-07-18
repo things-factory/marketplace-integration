@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-export const BizplacePlatformPatch = gql`
-  input BizplacePlatformPatch {
+export const MarketplaceStorePatch = gql`
+  input MarketplaceStorePatch {
     id: String
     name: String
     description: String

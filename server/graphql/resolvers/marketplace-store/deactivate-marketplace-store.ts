@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm'
-import { BizplacePlatform } from '../../../entities'
+import { MarketplaceStore } from '../../../entities'
 
-export const deactivateBizplacePlatform = {
-  async deactivateBizplacePlatform(_: any, { name }, context: any) {
-    const repository = getRepository(BizplacePlatform)
-    const bizplacePlatform = await repository.findOne({
+export const deactivateMarketplaceStore = {
+  async deactivateMarketplaceStore(_: any, { name }, context: any) {
+    const repository = getRepository(MarketplaceStore)
+    const marketplaceStore = await repository.findOne({
       where: { domain: context.state.domain, name }
     })
 
@@ -17,7 +17,7 @@ export const deactivateBizplacePlatform = {
     }
 
     return await repository.save({
-      ...bizplacePlatform,
+      ...marketplaceStore,
       ...patch,
       updater: context.state.user
     })

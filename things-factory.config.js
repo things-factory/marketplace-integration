@@ -5,16 +5,16 @@ export default {
   route,
   routes: [
     {
-      tagname: 'marketplace-channels',
-      page: 'marketplace-channels'
+      tagname: 'marketplace-stores',
+      page: 'marketplace-stores'
     },
     {
-      tagname: 'marketplace-channel-lazada',
-      page: 'marketplace-channel-lazada'
+      tagname: 'marketplace-store-lazada',
+      page: 'marketplace-store-lazada'
     },
     {
-      tagname: 'marketplace-channel-shopee',
-      page: 'marketplace-channel-shopee'
+      tagname: 'marketplace-store-shopee',
+      page: 'marketplace-store-shopee'
     }
   ],
   bootstrap

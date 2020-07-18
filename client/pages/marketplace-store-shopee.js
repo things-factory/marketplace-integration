@@ -20,7 +20,7 @@ class ChannelShopee extends connect(store)(PageView) {
   static get properties() {
     return {
       id: String,
-      bizplacePlatform: Object,
+      marketplaceStore: Object,
       authURL: String,
       shopId: String,
       code: String
@@ -29,16 +29,16 @@ class ChannelShopee extends connect(store)(PageView) {
 
   get context() {
     return {
-      title: 'channel Shopee'
+      title: 'store Shopee'
     }
   }
 
   render() {
-    var { name = '', status = '', countryCode = '', accessInfo = '' } = this.bizplacePlatform || {}
+    var { name = '', status = '', countryCode = '', accessInfo = '' } = this.marketplaceStore || {}
     console.log('authURL', this.authURL)
 
     return html`
-      <a href="marketplace-channels">Channels</a>
+      <a href="marketplace-stores">Stores</a>
 
       <h2>${name}</h2>
       <h3>status: ${status || 'inactive'}</h3>
@@ -47,18 +47,24 @@ class ChannelShopee extends connect(store)(PageView) {
       <h3>access information (to be hidden)</h3>
       <textarea .value=${accessInfo}> </textarea>
 
-      <div>
-        <label>auth-code</label>
-        <input type="text" .value=${this.code || ''} disabled />
-        <label>shop ID</label>
-        <input type="text" .value=${this.shopId || ''} disabled />
+      ${status == 'active'
+        ? html``
+        : html`
+            <div>
+              <label>auth-code</label>
+              <input type="text" .value=${this.code || ''} disabled />
+              <label>shop ID</label>
+              <input type="text" .value=${this.shopId || ''} disabled />
 
-        <a href=${this.authURL}>bind</a>
-      </div>
+              <a href=${this.authURL}>bind</a>
+            </div>
+          `}
 
       <div>
-        ${this.code
-          ? html`<button @click=${this.generateAPIToken.bind(this)}>refresh channel with this auth-code</button>`
+        ${status == 'active'
+          ? html`<button @click=${e => this.deactivate(name)}>disconnect this store</button>`
+          : this.code
+          ? html`<button @click=${this.generateAPIToken.bind(this)}>refresh store with this auth-code</button>`
           : html``}
       </div>
     `
@@ -79,7 +85,7 @@ class ChannelShopee extends connect(store)(PageView) {
       var response = await client.query({
         query: gql`
           query($id: String!) {
-            bizplacePlatform(id: $id) {
+            marketplaceStore(id: $id) {
               name
               description
               platform
@@ -94,7 +100,7 @@ class ChannelShopee extends connect(store)(PageView) {
         }
       })
 
-      this.bizplacePlatform = response.data.bizplacePlatform
+      this.marketplaceStore = response.data.marketplaceStore
 
       response = await client.query({
         query: gql`
@@ -133,8 +139,52 @@ class ChannelShopee extends connect(store)(PageView) {
       }
     })
 
-    this.bizplacePlatform = response.data.generateShopeeAccessToken
+    this.marketplaceStore = response.data.generateShopeeAccessToken
+    var { status, name } = this.marketplaceStore
+
+    document.dispatchEvent(
+      new CustomEvent('notify', {
+        detail: {
+          level: 'info',
+          message: `${status == 'active' ? 'success' : 'fail'} to activate : ${name}`
+        }
+      })
+    )
+  }
+
+  async deactivate(name) {
+    var response = await client.mutate({
+      mutation: gql`
+        mutation($name: String!) {
+          deactivateMarketplaceStore(name: $name) {
+            name
+            description
+            platform
+            countryCode
+            accessInfo
+            status
+          }
+        }
+      `,
+      variables: {
+        name
+      }
+    })
+
+    this.marketplaceStore = response.data.deactivateMarketplaceStore
+    var { status } = this.marketplaceStore
+    this.code = ''
+    this.shopId = ''
+
+    document.dispatchEvent(
+      new CustomEvent('notify', {
+        detail: {
+          level: 'info',
+          message: `${status == 'active' ? 'fail' : 'success'} to deactivate : ${name}`
+        }
+      })
+    )
   }
 }
 
-customElements.define('marketplace-channel-shopee', ChannelShopee)
+customElements.define('marketplace-store-shopee', ChannelShopee)

@@ -7,7 +7,7 @@ import { ScrollbarStyles } from '@things-factory/styles'
 
 import '@things-factory/form-ui'
 
-class IntegrationChannels extends localize(i18next)(PageView) {
+class IntegrationStores extends localize(i18next)(PageView) {
   static get styles() {
     return [
       ScrollbarStyles,
@@ -41,19 +41,19 @@ class IntegrationChannels extends localize(i18next)(PageView) {
 
   get context() {
     return {
-      title: i18next.t('title.marketplace channels'),
+      title: i18next.t('title.marketplace stores'),
       actions: [
         {
           title: i18next.t('button.save'),
-          action: this._updateChannels.bind(this)
+          action: this._updateStores.bind(this)
         },
         {
           title: i18next.t('button.delete'),
-          action: this._deleteChannels.bind(this)
+          action: this._deleteStores.bind(this)
         }
       ],
       exportable: {
-        name: i18next.t('title.marketplace channels'),
+        name: i18next.t('title.marketplace stores'),
         data: null
       }
     }
@@ -87,11 +87,8 @@ class IntegrationChannels extends localize(i18next)(PageView) {
               if (!record || !record.name || record.__dirty__ == '+') {
                 return
               }
-              if (record.status !== 'active') {
-                this.activate(record)
-              } else {
-                this.deactivate(record)
-              }
+
+              navigate(`marketplace-store-${record.platform}/${record.id}`)
             }
           }
         },
@@ -220,7 +217,7 @@ class IntegrationChannels extends localize(i18next)(PageView) {
     const response = await client.query({
       query: gql`
       query {
-        bizplacePlatforms(${gqlBuilder.buildArgs({
+        marketplaceStores(${gqlBuilder.buildArgs({
           filters: await this.searchForm.getQueryFilters(),
           pagination: { page, limit },
           sortings: sorters
@@ -241,8 +238,8 @@ class IntegrationChannels extends localize(i18next)(PageView) {
 
     if (!response.errors) {
       return {
-        total: response.data.bizplacePlatforms.total || 0,
-        records: response.data.bizplacePlatforms.items || []
+        total: response.data.marketplaceStores.total || 0,
+        records: response.data.marketplaceStores.items || []
       }
     }
   }
@@ -255,7 +252,7 @@ class IntegrationChannels extends localize(i18next)(PageView) {
     return this.shadowRoot.querySelector('search-form')
   }
 
-  async _deleteChannels(name) {
+  async _deleteStores(name) {
     if (
       confirm(
         i18next.t('text.sure_to_x', {
@@ -268,7 +265,7 @@ class IntegrationChannels extends localize(i18next)(PageView) {
         const response = await client.mutate({
           mutation: gql`
             mutation($names: [String]!) {
-              deleteBisplzceChannels(names: $names)
+              deleteBisplzceStores(names: $names)
             }
           `,
           variables: {
@@ -292,24 +289,24 @@ class IntegrationChannels extends localize(i18next)(PageView) {
     }
   }
 
-  async _updateChannels() {
+  async _updateStores() {
     let patches = this.dataGrist.dirtyRecords
     if (patches && patches.length) {
-      patches = patches.map(channel => {
-        let patchField = channel.id ? { id: channel.id } : {}
-        const dirtyFields = channel.__dirtyfields__
+      patches = patches.map(store => {
+        let patchField = store.id ? { id: store.id } : {}
+        const dirtyFields = store.__dirtyfields__
         for (let key in dirtyFields) {
           patchField[key] = dirtyFields[key].after
         }
-        patchField.cuFlag = channel.__dirty__
+        patchField.cuFlag = store.__dirty__
 
         return patchField
       })
 
       const response = await client.mutate({
         mutation: gql`
-          mutation($patches: [BizplacePlatformPatch]!) {
-            updateMultipleBizplacePlatform(patches: $patches) {
+          mutation($patches: [MarketplaceStorePatch]!) {
+            updateMultipleMarketplaceStore(patches: $patches) {
               name
             }
           }
@@ -322,45 +319,6 @@ class IntegrationChannels extends localize(i18next)(PageView) {
       if (!response.errors) this.dataGrist.fetch()
     }
   }
-
-  async activate(record) {
-    switch (record.platform) {
-      case 'lazada':
-        navigate(`marketplace-channel-lazada/${record.id}`)
-        break
-      case 'shopee':
-        navigate(`marketplace-channel-shopee/${record.id}`)
-        break
-    }
-  }
-
-  async deactivate(record) {
-    var response = await client.mutate({
-      mutation: gql`
-        mutation($name: String!) {
-          deactivateBizplacePlatform(name: $name) {
-            status
-          }
-        }
-      `,
-      variables: {
-        name: record.name
-      }
-    })
-
-    var status = response.data.deactivateBizplacePlatform.status
-
-    this.dataGrist.fetch()
-
-    document.dispatchEvent(
-      new CustomEvent('notify', {
-        detail: {
-          level: 'info',
-          message: `${status == 'active' ? 'fail' : 'success'} to deactivate : ${record.name}`
-        }
-      })
-    )
-  }
 }
 
-customElements.define('marketplace-channels', IntegrationChannels)
+customElements.define('marketplace-stores', IntegrationStores)

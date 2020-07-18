@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm'
-import { BizplacePlatform } from '../../../entities'
+import { MarketplaceStore } from '../../../entities'
 
 export const generateShopeeAccessToken = {
   async generateShopeeAccessToken(_: any, { id, code, shopId }, context: any) {
-    const repository = getRepository(BizplacePlatform)
-    const bizplacePlatform = await repository.findOne({
+    const repository = getRepository(MarketplaceStore)
+    const marketplaceStore: any = await repository.findOne({
       where: { domain: context.state.domain, id }
     })
 
@@ -28,7 +28,7 @@ export const generateShopeeAccessToken = {
     }
 
     return await repository.save({
-      ...bizplacePlatform,
+      ...marketplaceStore,
       ...patch,
       updater: context.state.user
     })

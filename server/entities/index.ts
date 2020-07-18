@@ -1,5 +1,5 @@
-import { BizplacePlatform } from './bizplace-platform'
+import { MarketplaceStore } from './marketplace-store'
 
-export const entities = [BizplacePlatform]
+export const entities = [MarketplaceStore]
 
-export { BizplacePlatform }
+export { MarketplaceStore }

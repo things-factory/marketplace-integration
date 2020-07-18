@@ -1,18 +1,18 @@
 export default function route(page) {
   switch (page) {
     case '':
-      return '/marketplace-channels'
+      return '/marketplace-stores'
 
-    case 'marketplace-channels':
-      import('./pages/channels')
+    case 'marketplace-stores':
+      import('./pages/marketplace-stores')
       return page
 
-    case 'marketplace-channel-lazada':
-      import('./pages/channel-lazada')
+    case 'marketplace-store-lazada':
+      import('./pages/marketplace-store-lazada')
       return page
 
-    case 'marketplace-channel-shopee':
-      import('./pages/channel-shopee')
+    case 'marketplace-store-shopee':
+      import('./pages/marketplace-store-shopee')
       return page
   }
 }

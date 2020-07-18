@@ -1,26 +1,27 @@
 import { User } from '@things-factory/auth-base'
-import { Bizplace } from '@things-factory/biz-base'
 import { Domain } from '@things-factory/shell'
 import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity()
 @Index(
-  'ix_bizplace-platform_0',
-  (bizplacePlatform: BizplacePlatform) => [bizplacePlatform.domain, bizplacePlatform.name],
+  'ix_marketplace-store_0',
+  (marketplaceStore: MarketplaceStore) => [marketplaceStore.domain, marketplaceStore.name],
   { unique: true }
 )
-export class BizplacePlatform {
+export class MarketplaceStore {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
   @ManyToOne(type => Domain)
   domain: Domain
 
-  @ManyToOne(type => Bizplace)
-  bizplace: Bizplace
-
   @Column()
   platform: string
+
+  @Column({
+    nullable: true
+  })
+  storeId: string
 
   @Column()
   countryCode: string

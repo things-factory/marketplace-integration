@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm'
-import { BizplacePlatform } from '../../../entities'
+import { MarketplaceStore } from '../../../entities'
 import LazadaAPI from 'lazada-open-platform-sdk'
 
 import { config } from '@things-factory/env'
@@ -8,8 +8,8 @@ const { appKey, appSecret } = lazadaConfig
 
 export const generateLazadaAccessToken = {
   async generateLazadaAccessToken(_: any, { id, code }, context: any) {
-    const repository = getRepository(BizplacePlatform)
-    const bizplacePlatform = await repository.findOne({
+    const repository = getRepository(MarketplaceStore)
+    const marketplaceStore = await repository.findOne({
       where: { domain: context.state.domain, id }
     })
 
@@ -27,7 +27,7 @@ export const generateLazadaAccessToken = {
     }
 
     return await repository.save({
-      ...bizplacePlatform,
+      ...marketplaceStore,
       ...patch,
       updater: context.state.user
     })
