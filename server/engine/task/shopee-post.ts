@@ -30,7 +30,7 @@ ShopeePost.parameterSpec = [
     name: 'path',
     label: 'path',
     property: {
-      options: ['/shop/get_partner_shop', '/shop_categorys/get', '/orders/basics']
+      options: ['', '/shop/get_partner_shop', '/shop_categorys/get', '/orders/basics']
     }
   },
   {
