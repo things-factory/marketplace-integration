@@ -1,5 +1,5 @@
 import { config } from '@things-factory/env'
-const lazadaConfig = config.get('market-platform-lazada', {})
+const lazadaConfig = config.get('marketplaceIntegrationLazada', {})
 const { appKey, appSecret } = lazadaConfig
 
 export const getLazadaAuthURL = {

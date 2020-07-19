@@ -7,17 +7,6 @@ import { ADD_SETTING } from '@things-factory/setting-base'
 import '@things-factory/setting-ui/client/setting-lets/domain-switch-let'
 
 export default function bootstrap() {
-  /* initialize reducers */
-
-  /* 사용자 signin/signout 에 따라서, setting 변경 */
-  store.dispatch({
-    type: APPEND_APP_TOOL,
-    tool: {
-      template: html` <span style="font-size: 1.2em;">Marketplace</span> `,
-      position: TOOL_POSITION.FRONT
-    }
-  })
-
   /* append viewpart anchor to asidebar */
   appendViewpart({
     name: 'asidebar-anchor',

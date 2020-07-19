@@ -3,7 +3,7 @@ import { MarketplaceStore } from '../../../../entities'
 import LazadaAPI from 'lazada-open-platform-sdk'
 
 import { config } from '@things-factory/env'
-const lazadaConfig = config.get('market-platform-lazada', {})
+const lazadaConfig = config.get('marketplaceIntegrationLazada', {})
 const { appKey, appSecret } = lazadaConfig
 
 export const generateLazadaAccessToken = {

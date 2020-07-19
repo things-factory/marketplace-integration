@@ -2,7 +2,7 @@ import { Connections, Connector } from '@things-factory/integration-base'
 import ShopeeApi from 'shopee-api'
 
 import { config } from '@things-factory/env'
-const shopeeConfig = config.get('market-platform-shopee', {})
+const shopeeConfig = config.get('marketplaceIntegrationShopee', {})
 const { partnerId, partnerKey, isUAT } = shopeeConfig
 
 export class ShopeeConnector implements Connector {

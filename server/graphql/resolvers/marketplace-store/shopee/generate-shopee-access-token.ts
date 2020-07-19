@@ -3,7 +3,7 @@ import { MarketplaceStore } from '../../../../entities'
 import ShopeeApi from 'shopee-api'
 
 import { config } from '@things-factory/env'
-const shopeeConfig = config.get('market-platform-shopee', {})
+const shopeeConfig = config.get('marketplaceIntegrationShopee', {})
 const { partnerId, partnerKey, isUAT } = shopeeConfig
 
 export const generateShopeeAccessToken = {
