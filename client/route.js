@@ -1,8 +1,5 @@
 export default function route(page) {
   switch (page) {
-    case '':
-      return '/marketplace-stores'
-
     case 'marketplace-stores':
       import('./pages/marketplace-stores')
       return page

@@ -9,10 +9,7 @@ async function LazopGetOrders(step, { logger, data }) {
     throw new Error(`no connection : ${connection}`)
   }
 
-  // var response = await client.get('/orders/get', {})
-
   return {
-    // data: await response.json()
     data: await client.getOrders({})
   }
 }

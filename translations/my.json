@@ -1,3 +1,8 @@
 {
+  "button.delete": "delete",
+  "field.country-code": "country",
+  "field.platform": "platoform",
+  "field.status": "status",
+  "field.store-id": "store id",
   "title.marketplace stores": "marketplace stores"
 }

@@ -1,3 +1,8 @@
 {
-  "title.marketplace stores": "marketplace stores"
+  "button.delete": "삭제",
+  "field.country-code": "국가",
+  "field.platform": "플랫폼",
+  "field.status": "상태",
+  "field.store-id": "스토어아이디",
+  "title.marketplace stores": "마켓플레이스 스토어"
 }

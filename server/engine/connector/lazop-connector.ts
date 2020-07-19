@@ -1,5 +1,11 @@
 import { Connections, Connector } from '@things-factory/integration-base'
+import { getRepository } from 'typeorm'
+import { MarketplaceStore } from '../../entities'
 import LazadaAPI from 'lazada-open-platform-sdk'
+
+import { config } from '@things-factory/env'
+const lazadaConfig = config.get('market-platform-lazada', {})
+const { appKey, appSecret } = lazadaConfig
 
 export class LazopConnector implements Connector {
   async ready(connectionConfigs) {
@@ -9,11 +15,15 @@ export class LazopConnector implements Connector {
   }
 
   async connect(connection) {
-    var { name, endpoint: url, params: { appKey, appSecret } = { appKey: '', appSecret: '' } } = connection
+    const { domain, name, endpoint: storeId } = connection
+
+    const repository = getRepository(MarketplaceStore)
+    const marketplaceStore: any = await repository.findOne({
+      where: { domain, storeId }
+    })
 
     const client = new LazadaAPI(appKey, appSecret, 'MALAYSIA')
-    const { access_token } = await client.generateAccessToken({ code: '0_120961_s2JCjKDb4ZHFcOKBgvPp2A5f42668' })
-    client.accessToken = access_token
+    client.accessToken = marketplaceStore.accessToken
 
     Connections.addConnection(name, client)
 
@@ -27,18 +37,7 @@ export class LazopConnector implements Connector {
   }
 
   get parameterSpec() {
-    return [
-      {
-        type: 'string',
-        label: 'app-key',
-        name: 'appKey'
-      },
-      {
-        type: 'string',
-        label: 'app-secret',
-        name: 'appSecret'
-      }
-    ]
+    return []
   }
 
   get taskPrefixes() {
