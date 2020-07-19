@@ -1,6 +1,6 @@
 {
   "name": "@things-factory/marketplace-integration",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist-server/index.js",
   "browser": "client/index.js",
   "things-factory": true,
