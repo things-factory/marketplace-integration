@@ -1,14 +1,15 @@
 import { getRepository } from 'typeorm'
-import { MarketplaceStore } from '../../../entities'
+import { MarketplaceStore } from '../../../../entities'
 
-export const deactivateMarketplaceStore = {
-  async deactivateMarketplaceStore(_: any, { name }, context: any) {
+export const deactivateLazadaStore = {
+  async deactivateLazadaStore(_: any, { name }, context: any) {
     const repository = getRepository(MarketplaceStore)
-    const marketplaceStore = await repository.findOne({
+    const marketplaceStore: any = await repository.findOne({
       where: { domain: context.state.domain, name }
     })
 
     var patch = {
+      storeId: '',
       accessToken: '',
       refreshToken: '',
       accessInfo: '',

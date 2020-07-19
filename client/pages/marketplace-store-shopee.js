@@ -3,6 +3,15 @@ import gql from 'graphql-tag'
 import { connect } from 'pwa-helpers/connect-mixin.js'
 import { client, store, PageView } from '@things-factory/shell'
 
+const MARKETPLACE_STORE_RESULT = `{
+  name
+  platform
+  storeId
+  countryCode
+  accessInfo
+  status
+}`
+
 class ChannelShopee extends connect(store)(PageView) {
   static get styles() {
     return css`
@@ -21,7 +30,6 @@ class ChannelShopee extends connect(store)(PageView) {
     return {
       id: String,
       marketplaceStore: Object,
-      authURL: String,
       shopId: String,
       code: String
     }
@@ -34,14 +42,14 @@ class ChannelShopee extends connect(store)(PageView) {
   }
 
   render() {
-    var { name = '', status = '', countryCode = '', accessInfo = '' } = this.marketplaceStore || {}
-    console.log('authURL', this.authURL)
+    var { name = '', status = '', storeId = '', countryCode = '', accessInfo = '' } = this.marketplaceStore || {}
 
     return html`
       <a href="marketplace-stores">Stores</a>
 
       <h2>${name}</h2>
       <h3>status: ${status || 'inactive'}</h3>
+      <h3>store id: ${storeId}</h3>
       <h3>country: ${countryCode}</h3>
 
       <h3>access information (to be hidden)</h3>
@@ -55,17 +63,13 @@ class ChannelShopee extends connect(store)(PageView) {
               <input type="text" .value=${this.code || ''} disabled />
               <label>shop ID</label>
               <input type="text" .value=${this.shopId || ''} disabled />
-
-              <a href=${this.authURL}>bind</a>
             </div>
           `}
 
       <div>
         ${status == 'active'
           ? html`<button @click=${e => this.deactivate(name)}>disconnect this store</button>`
-          : this.code
-          ? html`<button @click=${this.generateAPIToken.bind(this)}>refresh store with this auth-code</button>`
-          : html``}
+          : html`<button @click=${e => this.activate(name)}>connect this store</button>`}
       </div>
     `
   }
@@ -73,26 +77,13 @@ class ChannelShopee extends connect(store)(PageView) {
   stateChanged(state) {}
 
   async pageUpdated(changes, after, before) {
-    if (changes.params) {
-      var { code, shop_id } = changes.params
-      this.code = code
-      this.shopId = shop_id
-    }
-
     if (changes.resourceId) {
       this.id = changes.resourceId
 
       var response = await client.query({
         query: gql`
           query($id: String!) {
-            marketplaceStore(id: $id) {
-              name
-              description
-              platform
-              countryCode
-              status
-              accessInfo
-            }
+            marketplaceStore(id: $id) ${MARKETPLACE_STORE_RESULT}
           }
         `,
         variables: {
@@ -102,34 +93,39 @@ class ChannelShopee extends connect(store)(PageView) {
 
       this.marketplaceStore = response.data.marketplaceStore
 
-      response = await client.query({
-        query: gql`
-          query($id: String!, $redirectUrl: String!) {
-            getShopeeAuthURL(id: $id, redirectUrl: $redirectUrl)
-          }
-        `,
-        variables: {
-          id: this.id,
-          redirectUrl: location.href
-        }
-      })
+      if (location.pathname.endsWith('disconnect-callback')) {
+        await this.handleDisconnectCallback()
+      } else if (location.pathname.endsWith('connect-callback')) {
+        let { code, shop_id } = changes.params
+        this.code = code
+        this.shopId = shop_id
 
-      this.authURL = response.data.getShopeeAuthURL
+        await this.handleConnectCallback()
+      }
     }
   }
 
-  async generateAPIToken() {
+  async getShopeeAuthURL(cancel = false) {
+    var response = await client.query({
+      query: gql`
+        query($redirectUrl: String!, $cancel: Boolean) {
+          getShopeeAuthURL(redirectUrl: $redirectUrl, cancel: $cancel)
+        }
+      `,
+      variables: {
+        redirectUrl: location.origin + location.pathname + '/' + (cancel ? 'disconnect-callback' : 'connect-callback'),
+        cancel
+      }
+    })
+
+    return response.data.getShopeeAuthURL
+  }
+
+  async handleConnectCallback() {
     const response = await client.mutate({
       mutation: gql`
         mutation($id: String!, $code: String!, $shopId: String!) {
-          generateShopeeAccessToken(id: $id, code: $code, shopId: $shopId) {
-            name
-            description
-            platform
-            countryCode
-            accessInfo
-            status
-          }
+          generateShopeeAccessToken(id: $id, code: $code, shopId: $shopId) ${MARKETPLACE_STORE_RESULT}
         }
       `,
       variables: {
@@ -152,18 +148,12 @@ class ChannelShopee extends connect(store)(PageView) {
     )
   }
 
-  async deactivate(name) {
+  async handleDisconnectCallback() {
+    var { name } = this.marketplaceStore
     var response = await client.mutate({
       mutation: gql`
         mutation($name: String!) {
-          deactivateMarketplaceStore(name: $name) {
-            name
-            description
-            platform
-            countryCode
-            accessInfo
-            status
-          }
+          deactivateShopeeStore(name: $name) ${MARKETPLACE_STORE_RESULT}
         }
       `,
       variables: {
@@ -171,7 +161,7 @@ class ChannelShopee extends connect(store)(PageView) {
       }
     })
 
-    this.marketplaceStore = response.data.deactivateMarketplaceStore
+    this.marketplaceStore = response.data.deactivateShopeeStore
     var { status } = this.marketplaceStore
     this.code = ''
     this.shopId = ''
@@ -184,6 +174,14 @@ class ChannelShopee extends connect(store)(PageView) {
         }
       })
     )
+  }
+
+  async activate() {
+    location.href = await this.getShopeeAuthURL(false)
+  }
+
+  async deactivate() {
+    location.href = await this.getShopeeAuthURL(true)
   }
 }
 

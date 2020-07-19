@@ -13,7 +13,7 @@ export class ShopeeConnector implements Connector {
   }
 
   async connect(connection) {
-    var { name, endpoint: url, params: { shopId } = { shopId: '' } } = connection
+    var { name, endpoint: shopId } = connection
 
     Connections.logger.info(`shopee config: ${partnerId}, ${partnerKey}`)
     const client = new ShopeeApi({
@@ -21,7 +21,7 @@ export class ShopeeConnector implements Connector {
       shopid: Number(shopId),
       partner_id: partnerId,
       partner_key: partnerKey,
-      verbose: false
+      verbose: true
     })
 
     Connections.addConnection(name, client)
@@ -36,13 +36,7 @@ export class ShopeeConnector implements Connector {
   }
 
   get parameterSpec() {
-    return [
-      {
-        type: 'string',
-        label: 'shop-id',
-        name: 'shopId'
-      }
-    ]
+    return []
   }
 
   get taskPrefixes() {

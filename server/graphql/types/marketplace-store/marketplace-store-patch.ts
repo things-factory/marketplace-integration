@@ -6,6 +6,7 @@ export const MarketplaceStorePatch = gql`
     name: String
     description: String
     platform: String
+    storeId: String
     countryCode: String
     cuFlag: String
   }

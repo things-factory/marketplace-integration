@@ -3,6 +3,15 @@ import gql from 'graphql-tag'
 import { connect } from 'pwa-helpers/connect-mixin.js'
 import { client, store, PageView } from '@things-factory/shell'
 
+const MARKETPLACE_STORE_RESULT = `{
+  name
+  platform
+  storeId
+  countryCode
+  accessInfo
+  status
+}`
+
 class ChannelLazada extends connect(store)(PageView) {
   static get styles() {
     return css`
@@ -32,14 +41,14 @@ class ChannelLazada extends connect(store)(PageView) {
   }
 
   render() {
-    var { name = '', status = '', countryCode = '', accessInfo = '' } = this.marketplaceStore || {}
-    var clientId = '120961'
+    var { name = '', storeId = '', status = '', countryCode = '', accessInfo = '' } = this.marketplaceStore || {}
 
     return html`
       <a href="marketplace-stores">Stores</a>
 
       <h2>${name}</h2>
       <h3>status: ${status || 'inactive'}</h3>
+      <h3>store id: ${storeId}</h3>
       <h3>country: ${countryCode}</h3>
 
       <h3>access information (to be hidden)</h3>
@@ -51,20 +60,15 @@ class ChannelLazada extends connect(store)(PageView) {
             <div>
               <label>auth-code</label>
               <input type="text" .value=${this.code || ''} disabled />
-
-              <a
-                href=${`https://auth.lazada.com/oauth/authorize?response_type=code&force_auth=true&redirect_uri=${location.href}&client_id=${clientId}`}
-                >get code</a
-              >
             </div>
           `}
 
       <div>
-        ${status == 'active'
-          ? html`<button @click=${e => this.deactivate(name)}>disconnect this store</button>`
-          : this.code
-          ? html`<button @click=${this.generateAPIToken.bind(this)}>refresh store with this auth-code</button>`
-          : html``}
+        <div>
+          ${status == 'active'
+            ? html`<button @click=${e => this.deactivate(name)}>disconnect this store</button>`
+            : html`<button @click=${e => this.activate(name)}>connect this store</button>`}
+        </div>
       </div>
     `
   }
@@ -72,25 +76,13 @@ class ChannelLazada extends connect(store)(PageView) {
   stateChanged(state) {}
 
   async pageUpdated(changes, after, before) {
-    if (changes.params) {
-      var { code } = changes.params
-      this.code = code
-    }
-
     if (changes.resourceId) {
       this.id = changes.resourceId
 
       const response = await client.query({
         query: gql`
           query($id: String!) {
-            marketplaceStore(id: $id) {
-              name
-              description
-              platform
-              countryCode
-              status
-              accessInfo
-            }
+            marketplaceStore(id: $id) ${MARKETPLACE_STORE_RESULT}
           }
         `,
         variables: {
@@ -99,21 +91,36 @@ class ChannelLazada extends connect(store)(PageView) {
       })
 
       this.marketplaceStore = response.data.marketplaceStore
+
+      if (location.pathname.endsWith('connect-callback')) {
+        let { code } = changes.params
+        this.code = code
+
+        await this.handleConnectCallback()
+      }
     }
   }
 
-  async generateAPIToken() {
+  async getLazadaAuthURL() {
+    var response = await client.query({
+      query: gql`
+        query($redirectUrl: String!) {
+          getLazadaAuthURL(redirectUrl: $redirectUrl)
+        }
+      `,
+      variables: {
+        redirectUrl: location.origin + location.pathname + '/connect-callback'
+      }
+    })
+
+    return response.data.getLazadaAuthURL
+  }
+
+  async handleConnectCallback() {
     const response = await client.mutate({
       mutation: gql`
         mutation($id: String!, $code: String!) {
-          generateLazadaAccessToken(id: $id, code: $code) {
-            name
-            description
-            platform
-            countryCode
-            status
-            accessInfo
-          }
+          generateLazadaAccessToken(id: $id, code: $code) ${MARKETPLACE_STORE_RESULT}
         }
       `,
       variables: {
@@ -135,18 +142,17 @@ class ChannelLazada extends connect(store)(PageView) {
     )
   }
 
-  async deactivate(name) {
+  async activate() {
+    location.href = await this.getLazadaAuthURL()
+  }
+
+  async deactivate() {
+    var { name } = this.marketplaceStore
+
     var response = await client.mutate({
       mutation: gql`
         mutation($name: String!) {
-          deactivateMarketplaceStore(name: $name) {
-            name
-            description
-            platform
-            countryCode
-            accessInfo
-            status
-          }
+          deactivateLazadaStore(name: $name) ${MARKETPLACE_STORE_RESULT}
         }
       `,
       variables: {
@@ -154,7 +160,7 @@ class ChannelLazada extends connect(store)(PageView) {
       }
     })
 
-    this.marketplaceStore = response.data.deactivateMarketplaceStore
+    this.marketplaceStore = response.data.deactivateLazadaStore
     var { status } = this.marketplaceStore
     this.code = ''
 

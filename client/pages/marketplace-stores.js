@@ -108,24 +108,28 @@ class IntegrationStores extends localize(i18next)(PageView) {
           width: 180
         },
         {
-          type: 'string',
-          name: 'description',
-          header: i18next.t('field.description'),
-          record: {
-            editable: true
-          },
-          sortable: false,
-          width: 180
-        },
-        {
           type: 'select',
           name: 'platform',
           header: i18next.t('field.platform'),
           record: {
             editable: true,
-            options: ['', 'lazada', 'shopee', 'zalora', 'qoo10', 'amazon', 'lelong', 'shopclues', 'magento', 'flipkart']
+            options: [
+              '',
+              'lazada',
+              'shopee' /*, 'zalora', 'qoo10', 'amazon', 'lelong', 'shopclues', 'magento', 'flipkart'*/
+            ]
           },
           sortable: true,
+          width: 180
+        },
+        {
+          type: 'string',
+          name: 'storeId',
+          header: i18next.t('field.store-id'),
+          record: {
+            editable: false
+          },
+          sortable: false,
           width: 180
         },
         {
@@ -173,7 +177,7 @@ class IntegrationStores extends localize(i18next)(PageView) {
           name: 'status',
           header: i18next.t('field.status'),
           record: {
-            align: 'left'
+            align: 'center'
           },
           sortable: true,
           width: 100
@@ -225,8 +229,8 @@ class IntegrationStores extends localize(i18next)(PageView) {
           items {
             id
             name
-            description
             platform
+            storeId
             countryCode
             status
             updatedAt
@@ -265,7 +269,7 @@ class IntegrationStores extends localize(i18next)(PageView) {
         const response = await client.mutate({
           mutation: gql`
             mutation($names: [String]!) {
-              deleteBisplzceStores(names: $names)
+              deleteMarketplaceStores(names: $names)
             }
           `,
           variables: {

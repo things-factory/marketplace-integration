@@ -8,6 +8,23 @@ export const Mutation = `
     marketplaceStore: NewMarketplaceStore!
   ): MarketplaceStore
 
+  updateMarketplaceStore (
+    name: String!
+    patch: MarketplaceStorePatch!
+  ): MarketplaceStore
+
+  updateMultipleMarketplaceStore (
+    patches: [MarketplaceStorePatch]!
+  ): [MarketplaceStore]
+
+  deleteMarketplaceStore (
+    name: String!
+  ): Boolean
+
+  deleteMarketplaceStores (
+    names: [String]!
+  ): Boolean
+
   generateLazadaAccessToken (
     id: String!
     code: String!
@@ -19,34 +36,26 @@ export const Mutation = `
     shopId: String!
   ): MarketplaceStore
 
-  updateMarketplaceStore (
-    name: String!
-    patch: MarketplaceStorePatch!
-  ): MarketplaceStore
-
-  updateMultipleMarketplaceStore (
-    patches: [MarketplaceStorePatch]!
-  ): [MarketplaceStore]
-
-  deactivateMarketplaceStore (
+  deactivateShopeeStore (
     name: String!
   ): MarketplaceStore
 
-  deleteMarketplaceStore (
+  deactivateLazadaStore (
     name: String!
-  ): Boolean
-
-  deleteMarketplaceStores (
-    names: [String]!
-  ): Boolean
+  ): MarketplaceStore
 `
 
 export const Query = `
   marketplaceStores(filters: [Filter], pagination: Pagination, sortings: [Sorting]): MarketplaceStoreList
   marketplaceStore(id: String!): MarketplaceStore
-  getShopeeAuthURL (
-    id: String!
+  
+  getLazadaAuthURL (
     redirectUrl: String!
+  ): String
+  
+  getShopeeAuthURL (
+    redirectUrl: String!
+    cancel: Boolean
   ): String
 `
 

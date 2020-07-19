@@ -14,8 +14,13 @@ async function ShopeePost(step, { logger, data }) {
     throw new Error(`no connection : ${connection}`)
   }
 
+  var { body } = await client.post(path, accessor ? access(accessor) : {})
+  if (body.error) {
+    throw body
+  }
+
   return {
-    data: (await client.post(path, accessor ? access(accessor) : {})).body
+    data: body
   }
 }
 

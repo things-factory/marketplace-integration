@@ -5,6 +5,7 @@ export const NewMarketplaceStore = gql`
     name: String!
     description: String
     platform: String!
-    countryCode: String!
+    storeId: String
+    countryCode: String
   }
 `

@@ -7,6 +7,7 @@ export const MarketplaceStore = gql`
     domain: Domain
     description: String
     platform: String
+    storeId: String
     countryCode: String
     status: String
     accessInfo: String
