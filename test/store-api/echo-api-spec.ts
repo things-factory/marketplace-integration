@@ -9,8 +9,7 @@ describe('StoreAPI Test - echo', function () {
   }
 
   it('should return copied object', async function () {
-    const storeApi = new StoreAPI()
-    const result = await storeApi.echo(store, {
+    const result = await StoreAPI.echo(store, {
       x: 'x',
       y: 'y'
     })

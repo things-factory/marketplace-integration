@@ -4,9 +4,9 @@ export const api = (target: Object, property: string, descriptor: TypedPropertyD
   const method = descriptor.value
 
   descriptor.value = async function (store: MarketplaceStore, request) {
-    const StoreAPI = this.constructor
+    const StoreAPI = this
 
-    var { platform } = store // TODO fetch from database
+    var { platform } = store
     var { apicaller, apis } = StoreAPI.getPlatform(platform)
 
     var m = apis[method.name]

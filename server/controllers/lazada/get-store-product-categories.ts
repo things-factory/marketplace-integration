@@ -1,4 +1,4 @@
-export function getProductCategories() {
+export function getStoreProductCategories() {
   return {
     path: '/FIXME',
     normalize(req) {

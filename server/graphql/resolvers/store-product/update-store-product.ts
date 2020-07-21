@@ -1,5 +1,5 @@
-import { config } from '@things-factory/env'
+import { StoreAPI } from '../../../controllers/store-api'
 
 export const updateStoreProduct = {
-  async updateStoreProduct(_: any, {}, context: any) {}
+  async updateStoreProduct(_: any, { storeId }, context: any) {}
 }

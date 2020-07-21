@@ -1,3 +1,5 @@
+import { getRepository } from 'typeorm'
+import { MarketplaceStore } from '../../entities'
 import { api } from './decorators'
 
 export class StoreAPI {
@@ -14,14 +16,23 @@ export class StoreAPI {
     return StoreAPI.platforms[name]
   }
 
-  callRequest(store, fn, reqData) {}
+  static async getMarketplaceStore(id) {
+    const repository = getRepository(MarketplaceStore)
+    return await repository.find(id)
+  }
 
   @api
-  echo(store, req): any {}
+  static echo(store, req): any {}
 
   @api
-  getAirwayBill(store, req): any {}
+  static getAirwayBill(store, req): any {}
 
   @api
-  getProductCategories(store, req): any {}
+  static getStoreProductCategories(store, req?): any {}
+
+  @api
+  static getStoreProductCategoryAttributes(store, req): any {}
+
+  @api
+  static getStoreProducts(store, req): any {}
 }
