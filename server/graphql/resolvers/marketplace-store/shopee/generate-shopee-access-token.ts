@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm'
 import { MarketplaceStore } from '../../../../entities'
-import ShopeeApi from 'shopee-api'
+import { Shopee } from '../../../../controllers/shopee/shopee'
 
 import { config } from '@things-factory/env'
 const shopeeConfig = config.get('marketplaceIntegrationShopee', {})
@@ -20,12 +20,11 @@ export const generateShopeeAccessToken = {
      * TODO 인증이 끝나면, authed shop 정보를 가져와서 accessInfo에 담아두면 좋다.
      * oauth 세션의 만료시간을 authed shop 정보에서 알 수 있기 때문이다. (테스트 경우는 1년이었다.)
      */
-    const client = new ShopeeApi({
+    const client = new Shopee({
       isUAT,
       shopid: Number(shopId),
       partner_id: partnerId,
-      partner_key: partnerKey,
-      verbose: true
+      partner_key: partnerKey
     })
 
     const { body } = await client.post('/shop/get_partner_shop', {})

@@ -44,7 +44,7 @@
     "@things-factory/system-ui": "^2.0.0",
     "debug": "^4.1.1",
     "lazada-open-platform-sdk": "^2.0.0-0",
-    "shopee-api": "^1.0.3"
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "@microsoft/tsdoc": "^0.12.20",

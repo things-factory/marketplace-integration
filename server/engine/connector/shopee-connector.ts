@@ -1,5 +1,5 @@
 import { Connections, Connector } from '@things-factory/integration-base'
-import ShopeeApi from 'shopee-api'
+import { Shopee } from '../../controllers/shopee/shopee'
 
 import { config } from '@things-factory/env'
 const shopeeConfig = config.get('marketplaceIntegrationShopee', {})
@@ -16,12 +16,11 @@ export class ShopeeConnector implements Connector {
     var { name, endpoint: shopId } = connection
 
     Connections.logger.info(`shopee config: ${partnerId}, ${partnerKey}`)
-    const client = new ShopeeApi({
+    const client = new Shopee({
       isUAT: isUAT,
       shopid: Number(shopId),
       partner_id: partnerId,
-      partner_key: partnerKey,
-      verbose: true
+      partner_key: partnerKey
     })
 
     Connections.addConnection(name, client)
