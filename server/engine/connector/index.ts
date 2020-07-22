@@ -1,2 +1,2 @@
-import './lazop-connector'
+import './lazada-connector'
 import './shopee-connector'
