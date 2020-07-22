@@ -8,7 +8,7 @@ import { Parameter, SystemParameters } from './types'
  */
 const concatObjectKeyValue = (parameters: Parameter): string => {
   return Object.entries(parameters)
-    .sort(([k1, v1], [k2, v2]) => (k2 > k1 ? 1 : 0))
+    .sort(([k1, v1], [k2, v2]) => (k2 > k1 ? -1 : 1))
     .map(([k, v]) => `${k}${v}`)
     .join('')
 }

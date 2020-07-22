@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm'
 import { MarketplaceStore } from '../../../../entities'
-import LazadaAPI from 'lazada-open-platform-sdk'
+import { Endpoint, Lazada } from '../../../../controllers/lazada'
 
 import { config } from '@things-factory/env'
 const lazadaConfig = config.get('marketplaceIntegrationLazada', {})
@@ -13,7 +13,8 @@ export const generateLazadaAccessToken = {
       where: { domain: context.state.domain, id }
     })
 
-    const client = new LazadaAPI(appKey, appSecret, 'SINGAPORE')
+    // TODO Fill Endpoint from marketplaceStore.countryCode
+    const client = new Lazada(Endpoint.SINGAPORE, appKey, appSecret)
     const generated = await client.generateAccessToken({ code })
     const { country, access_token, refresh_token, country_user_info } = generated
     client.accessToken = access_token

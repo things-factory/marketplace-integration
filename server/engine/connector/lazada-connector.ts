@@ -1,17 +1,17 @@
 import { Connections, Connector } from '@things-factory/integration-base'
 import { getRepository } from 'typeorm'
 import { MarketplaceStore } from '../../entities'
-import LazadaAPI from 'lazada-open-platform-sdk'
+import { Endpoint, Lazada } from '../../controllers/lazada'
 
 import { config } from '@things-factory/env'
 const lazadaConfig = config.get('marketplaceIntegrationLazada', {})
 const { appKey, appSecret } = lazadaConfig
 
-export class LazopConnector implements Connector {
+export class LazadaConnector implements Connector {
   async ready(connectionConfigs) {
     await Promise.all(connectionConfigs.map(this.connect))
 
-    Connections.logger.info('lazop-connector connections are ready')
+    Connections.logger.info('lazada-connector connections are ready')
   }
 
   async connect(connection) {
@@ -22,18 +22,19 @@ export class LazopConnector implements Connector {
       where: { domain, storeId }
     })
 
-    const client = new LazadaAPI(appKey, appSecret, 'MALAYSIA')
+    // TODO Fill Endpoint from marketplaceStore.countryCode
+    const client = new Lazada(Endpoint.MALAYSIA, appKey, appSecret)
     client.accessToken = marketplaceStore.accessToken
 
     Connections.addConnection(name, client)
 
-    Connections.logger.info(`lazop-connector connection(${name}:${connection.endpoint}) is connected`)
+    Connections.logger.info(`lazada-connector connection(${name}:${connection.endpoint}) is connected`)
   }
 
   async disconnect(name) {
     Connections.removeConnection(name)
 
-    Connections.logger.info(`lazop-connector connection(${name}) is disconnected`)
+    Connections.logger.info(`lazada-connector connection(${name}) is disconnected`)
   }
 
   get parameterSpec() {
@@ -41,8 +42,8 @@ export class LazopConnector implements Connector {
   }
 
   get taskPrefixes() {
-    return ['lazop']
+    return ['lazada']
   }
 }
 
-Connections.registerConnector('lazop-connector', new LazopConnector())
+Connections.registerConnector('lazada-connector', new LazadaConnector())

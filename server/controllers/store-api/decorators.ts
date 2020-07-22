@@ -3,6 +3,8 @@ const debug = Debug('things-factory:marketplace-integration')
 
 import { MarketplaceStore } from 'server/entities'
 
+const NOOP = v => v
+
 export const api = (target: Object, property: string, descriptor: TypedPropertyDescriptor<any>): any => {
   const method = descriptor.value
 
@@ -14,14 +16,14 @@ export const api = (target: Object, property: string, descriptor: TypedPropertyD
 
     var m = apis[method.name]
 
-    var { path, method: httpMethod = 'post', denormalize, normalize, docall } = m.apply(this, [request])
+    var { path, method: httpMethod = 'post', denormalize = NOOP, normalize = NOOP, docall } = m.apply(this, [request])
 
-    var reqData = denormalize(request)
-    debug('request', reqData)
+    var request = denormalize(request)
+    debug('request', request)
 
     var result = docall
-      ? await docall.apply(this, [store, httpMethod, path, reqData, apicaller])
-      : await apicaller.apply(this, [store, httpMethod, path, reqData])
+      ? await docall.apply(this, [store, httpMethod, path, request, apicaller])
+      : await apicaller.apply(this, [store, httpMethod, path, request])
 
     debug('response', result)
 
