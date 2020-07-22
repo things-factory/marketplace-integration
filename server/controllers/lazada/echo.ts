@@ -1,12 +1,12 @@
 export function echo() {
   return {
     path: '/echo',
-    normalize(req) {
-      console.log('normalize', req)
+    denormalize(req) {
+      console.log('denormalize', req)
       return { ...req }
     },
-    denormalize(res) {
-      console.log('denormalize', res)
+    normalize(res) {
+      console.log('normalize', res)
       return { ...res }
     },
     docall(store, path, req, apicaller) {

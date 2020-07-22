@@ -1,16 +1,16 @@
 export function getStoreProductCategoryAttributes() {
   return {
     path: '/item/attributes/get',
-    normalize(req) {
-      var { categoryId, isCrossBorder } = req
+    denormalize(req) {
+      var { categoryId, isCrossBorder = true } = req
 
       return {
         category_id: categoryId,
         is_cb: isCrossBorder
       }
     },
-    denormalize(res) {
-      return res.attributes
+    normalize(res) {
+      return res.data.attributes
     }
   }
 }

@@ -28,7 +28,7 @@
     "migration:revert": "node ./node_modules/typeorm/cli.js migration:revert",
     "stop:dev": "kill $(lsof -t -i:3000,3001)",
     "stop": "things-factory-stop marketplace-integration",
-    "test": "DEBUG=things-factory:* npx mocha -r ts-node/register ./test/**/*spec.ts"
+    "test": "DEBUG=things-factory:* NODE_ENV=development npx mocha -r ts-node/register ./test/**/*spec.ts"
   },
   "dependencies": {
     "@things-factory/apptool-ui": "^2.0.0",
@@ -42,6 +42,7 @@
     "@things-factory/resource-ui": "^2.0.0",
     "@things-factory/setting-ui": "^2.0.0",
     "@things-factory/system-ui": "^2.0.0",
+    "debug": "^4.1.1",
     "lazada-open-platform-sdk": "^2.0.0-0",
     "shopee-api": "^1.0.3"
   },

@@ -1,7 +1,7 @@
 export function getStoreProducts() {
   return {
     path: '/items/get',
-    normalize(req) {
+    denormalize(req) {
       var {
         pagination = { page, limit }
         // update_time_from,
@@ -16,8 +16,8 @@ export function getStoreProducts() {
         // update_time_to
       }
     },
-    denormalize(res) {
-      return res.items
+    normalize(res) {
+      return res.data.items
     }
   }
 }

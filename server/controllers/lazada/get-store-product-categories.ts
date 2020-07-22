@@ -1,13 +1,13 @@
 export function getStoreProductCategories() {
   return {
     path: '/FIXME',
-    normalize(req) {
+    denormalize(req) {
       return {
         x: 'a',
         y: 'y'
       }
     },
-    denormalize(res) {
+    normalize(res) {
       return {
         a: 'a',
         b: 'y'

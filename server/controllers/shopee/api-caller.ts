@@ -7,10 +7,10 @@ const { partnerId, partnerKey, isUAT } = shopeeConfig
 export const apicaller = async (store, path, data) => {
   const client = new ShopeeApi({
     isUAT: isUAT,
-    shopid: Number(store),
+    shopid: Number(store.storeId),
     partner_id: partnerId,
     partner_key: partnerKey,
-    verbose: true
+    verbose: false
   })
 
   var { body } = await client.post(path, data)
