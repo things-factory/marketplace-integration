@@ -1,3 +1,5 @@
+export * from './shopee'
+
 import { apicaller } from './api-caller'
 import { echo } from './echo'
 import { getAirwayBill } from './get-airway-bill'

@@ -14,14 +14,14 @@ export const api = (target: Object, property: string, descriptor: TypedPropertyD
 
     var m = apis[method.name]
 
-    var { path, denormalize, normalize, docall } = m.apply(this, [request])
+    var { path, method: httpMethod = 'post', denormalize, normalize, docall } = m.apply(this, [request])
 
     var reqData = denormalize(request)
     debug('request', reqData)
 
     var result = docall
-      ? await docall.apply(this, [store, path, reqData, apicaller])
-      : await apicaller.apply(this, [store, path, reqData])
+      ? await docall.apply(this, [store, httpMethod, path, reqData, apicaller])
+      : await apicaller.apply(this, [store, httpMethod, path, reqData])
 
     debug('response', result)
 

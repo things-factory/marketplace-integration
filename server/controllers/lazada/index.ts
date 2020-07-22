@@ -1,3 +1,5 @@
+export * from './client'
+
 import { apicaller } from './api-caller'
 import { echo } from './echo'
 import { getAirwayBill } from './get-airway-bill'
