@@ -1,20 +1,18 @@
 import { expect } from 'chai'
+
 import { StoreAPI } from '../../server/controllers/store-api'
-import '../../server/controllers/lazada'
+import { stores } from './test-stores'
 
 describe('StoreAPI Test - echo', function () {
-  const store = {
-    name: 'test-store',
-    platform: 'lazada'
-  }
-
   it('should return copied object', async function () {
-    const result = await StoreAPI.echo(store, {
-      x: 'x',
-      y: 'y'
-    })
+    for (let store of stores) {
+      const result = await StoreAPI.echo(store, {
+        x: 'x',
+        y: 'y'
+      })
 
-    expect(result.x).to.equal('x')
-    expect(result.y).to.equal('y')
+      expect(result.x).to.equal('x')
+      expect(result.y).to.equal('y')
+    }
   })
 })
