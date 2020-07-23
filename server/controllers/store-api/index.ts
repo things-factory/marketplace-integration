@@ -5,9 +5,9 @@ import { api } from './decorators'
 export class StoreAPI {
   static platforms = {}
 
-  static registerPlatform(name, apicaller, apis) {
+  static registerPlatform(name, action, apis) {
     StoreAPI.platforms[name] = {
-      apicaller,
+      action,
       apis
     }
   }

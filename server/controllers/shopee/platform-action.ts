@@ -4,7 +4,7 @@ import { config } from '@things-factory/env'
 const shopeeConfig = config.get('marketplaceIntegrationShopee', {})
 const { partnerId, partnerKey, isUAT } = shopeeConfig
 
-export const apicaller = async (store, method = 'post', path, data) => {
+export const action = async ({ store, path, request }) => {
   const client = new Shopee({
     isUAT: isUAT,
     shopid: Number(store.storeId),
@@ -12,7 +12,7 @@ export const apicaller = async (store, method = 'post', path, data) => {
     partner_key: partnerKey
   })
 
-  var body = await client.post(path, data)
+  var body = await client.post(path, request)
   if (body.error) {
     throw body
   }

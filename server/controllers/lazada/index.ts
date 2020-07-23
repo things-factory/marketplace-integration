@@ -1,6 +1,6 @@
 export * from './client'
 
-import { apicaller } from './api-caller'
+import { action } from './platform-action'
 import { echo } from './echo'
 import { getAirwayBill } from './get-airway-bill'
 import { getStoreOrder } from './get-store-order'
@@ -10,7 +10,7 @@ import { getStoreProducts } from './get-store-products'
 
 import { StoreAPI } from '../store-api'
 
-StoreAPI.registerPlatform('lazada', apicaller, {
+StoreAPI.registerPlatform('lazada', action, {
   echo,
   getAirwayBill,
   getStoreOrder,

@@ -12,22 +12,26 @@ export const api = (target: Object, property: string, descriptor: TypedPropertyD
     const StoreAPI = this
 
     var { platform } = store
-    var { apicaller, apis } = StoreAPI.getPlatform(platform)
+    var { action: platformAction, apis } = StoreAPI.getPlatform(platform)
 
     var m = apis[method.name]
 
-    var { path, method: httpMethod = 'post', denormalize = NOOP, normalize = NOOP, docall } = m.apply(this, [request])
+    var {
+      path,
+      method: httpMethod = 'post',
+      denormalize = NOOP,
+      normalize = NOOP,
+      action = platformAction
+    } = m.apply(this, [request])
 
-    var request = denormalize(request)
-    debug('request', request)
+    var denormalized = denormalize(request)
+    debug('request', denormalized)
 
-    var result = docall
-      ? await docall.apply(this, [store, httpMethod, path, request, apicaller])
-      : await apicaller.apply(this, [store, httpMethod, path, request])
+    var response = await action.apply(this, [{ store, httpMethod, path, request: denormalized, platformAction }])
 
-    debug('response', result)
+    debug('response', response)
 
-    return normalize(result)
+    return normalize(response)
   }
 
   return descriptor

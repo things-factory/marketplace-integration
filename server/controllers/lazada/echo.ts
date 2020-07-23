@@ -7,8 +7,8 @@ export function echo() {
     normalize(res) {
       return { ...res }
     },
-    docall(store, method, path, req, apicaller) {
-      return { ...req }
+    action({ store, method, path, request, platformAction }) {
+      return { ...request }
     }
   }
 }
