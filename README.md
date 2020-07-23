@@ -9,12 +9,12 @@
 
 ### TDD (Test Driven Development)
 
-- using frameworks : chai, mocha, should
+- using frameworks : chai(https://www.chaijs.com/), mocha(https://mochajs.org/), should(https://github.com/shouldjs/should.js)
 - usages
 
 ```
 # test all tests
-$ DEBUG=things-factory:* NODE_ENV=development npx mocha -r ts-node/register ./test/**/*spec.ts
+$ yarn test
 # test specific modules test
 $ DEBUG=things-factory:* NODE_ENV=development npx mocha -r ts-node/register ./test/store-api/*spec.ts
 # test specific test
