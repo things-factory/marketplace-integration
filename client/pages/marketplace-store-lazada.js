@@ -12,7 +12,7 @@ const MARKETPLACE_STORE_RESULT = `{
   status
 }`
 
-class ChannelLazada extends connect(store)(PageView) {
+class MarketplaceStoreLazada extends connect(store)(PageView) {
   static get styles() {
     return css`
       :host {
@@ -175,4 +175,4 @@ class ChannelLazada extends connect(store)(PageView) {
   }
 }
 
-customElements.define('marketplace-store-lazada', ChannelLazada)
+customElements.define('marketplace-store-lazada', MarketplaceStoreLazada)

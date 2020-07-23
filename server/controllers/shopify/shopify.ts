@@ -5,12 +5,9 @@ import Debug from 'debug'
 const debug = Debug('things-factory:marketplace-integration:shopify')
 
 export type ShopifyConfig = {
-  partner_id: number
-  partner_key: string
-  shopid?: number
-  redirect_uri?: string
-  webhook_url?: string
-  isUAT?: boolean
+  apiKey: string
+  apiSecret: string
+  shop: string
 }
 
 export class Shopify {
@@ -20,55 +17,36 @@ export class Shopify {
     this.config = {
       ...config
     }
-
-    this.config.partner_id = Number(this.config.partner_id)
   }
 
   getBaseUrl() {
-    return `https://partner${this.config.isUAT ? '.uat' : ''}.shopeemobile.com/api/v1`
+    return `https://${this.config.shop}.myshopify.com/admin/oauth/access_token`
   }
 
-  buildAuthURL(isCancel = false) {
-    const { partner_key, partner_id, redirect_uri } = this.config
+  buildAuthURL(redirectUrl, nonce) {
+    // TODO set accessMode properly https://shopify.dev/tutorials/authenticate-with-oauth#step-2-ask-for-permission
+    var accessMode = 'per-user'
+    // TODO make scopes properly
+    var scopes = 'write_orders,read_customers'
 
-    const token = crypto
-      .createHash('sha256')
-      .update(partner_key + redirect_uri)
-      .digest('hex')
+    var { shop, apiKey } = this.config
 
-    let authUrl = `${this.getBaseUrl()}/shop/`
-    authUrl += isCancel ? 'cancel_auth_partner' : 'auth_partner'
-    authUrl += `?id=${partner_id}`
-    authUrl += `&token=${token}`
-    authUrl += `&redirect=${redirect_uri}`
-
-    debug('auth-url', authUrl)
-    return authUrl
-  }
-
-  buildCancelAuthUrl() {
-    return this.buildAuthURL(true)
+    return `https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUrl}&state=${nonce}&grant_options[]=${accessMode}`
+    // return `https://${storeId}.myshopify.com/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUrl}&state=${nonce}`
   }
 
   generateAuthorization(path, data) {
     const message = `${this.getBaseUrl() + path}|${data}`
-    return crypto.createHmac('sha256', this.config.partner_key).update(message).digest('hex')
-  }
-
-  isValidSignature(params, signature) {
-    const message = `${this.config.webhook_url}|${params}`
-    const digest = crypto.createHmac('sha256', this.config.partner_key).update(message).digest('hex')
-
-    return digest === signature
+    return crypto.createHmac('sha256', this.config.apiSecret).update(message).digest('hex')
   }
 
   async post(endpoint, data: any = {}) {
-    const { partner_id, shopid } = this.config
+    const { apiKey, shop } = this.config
 
-    data.partner_id = partner_id
+    data.apiKey = apiKey
     data.timestamp = Math.floor(Date.now() / 1000)
-    if (shopid) {
-      data.shopid = shopid
+    if (shop) {
+      data.shop = shop
     }
 
     debug('data', data)

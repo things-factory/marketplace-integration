@@ -14,5 +14,9 @@ export default function route(page) {
     case 'marketplace-store-shopee':
       import('./pages/marketplace-store-shopee')
       return page
+
+    case 'marketplace-store-shopify':
+      import('./pages/marketplace-store-shopify')
+      return page
   }
 }

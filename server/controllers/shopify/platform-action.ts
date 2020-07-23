@@ -1,15 +1,14 @@
 import { Shopify } from './shopify'
 
 import { config } from '@things-factory/env'
-const shopeeConfig = config.get('marketplaceIntegrationShopify', {})
-const { partnerId, partnerKey, isUAT } = shopeeConfig
+const shopifyConfig = config.get('marketplaceIntegrationShopify', {})
+const { apiKey, apiSecret } = shopifyConfig
 
 export const action = async ({ store, path, request }) => {
   const client = new Shopify({
-    isUAT: isUAT,
-    shopid: Number(store.storeId),
-    partner_id: partnerId,
-    partner_key: partnerKey
+    shop: store.storeId,
+    apiKey,
+    apiSecret
   })
 
   var body = await client.post(path, request)

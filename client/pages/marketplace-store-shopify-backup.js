@@ -2,6 +2,7 @@ import { html, css } from 'lit-element'
 import gql from 'graphql-tag'
 import { connect } from 'pwa-helpers/connect-mixin.js'
 import { client, store, PageView } from '@things-factory/shell'
+import { stringify } from 'querystring'
 
 const MARKETPLACE_STORE_RESULT = `{
   name
@@ -12,7 +13,7 @@ const MARKETPLACE_STORE_RESULT = `{
   status
 }`
 
-class MarketplaceStoreShopee extends connect(store)(PageView) {
+class MarketplaceStoreShopify extends connect(store)(PageView) {
   static get styles() {
     return css`
       :host {
@@ -31,13 +32,15 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
       id: String,
       marketplaceStore: Object,
       shopId: String,
-      code: String
+      code: String,
+      hmac: String,
+      nonce: String
     }
   }
 
   get context() {
     return {
-      title: 'store Shopee'
+      title: 'store Shopify'
     }
   }
 
@@ -96,36 +99,39 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
       if (location.pathname.endsWith('disconnect-callback')) {
         await this.handleDisconnectCallback()
       } else if (location.pathname.endsWith('connect-callback')) {
-        let { code, shop_id } = changes.params
+        /* code={authorization_code}&hmac=da9d83c171400a41f8db91a950508985&timestamp=1409617544&state={nonce}&shop={hostname} */
+        let { code, hmac, state, shop } = changes.params
         this.code = code
-        this.shopId = shop_id
+        this.hmac = hmac
+        this.nonce = state
+        this.shopId = shop
 
         await this.handleConnectCallback()
       }
     }
   }
 
-  async getShopeeAuthURL(cancel = false) {
+  async getShopifyAuthURL() {
     var response = await client.query({
       query: gql`
-        query($redirectUrl: String!, $cancel: Boolean) {
-          getShopeeAuthURL(redirectUrl: $redirectUrl, cancel: $cancel)
+        query($redirectUrl: String!, $shopId: String) {
+          getShopifyAuthURL(redirectUrl: $redirectUrl, shopId: $shopId)
         }
       `,
       variables: {
-        redirectUrl: location.origin + location.pathname + '/' + (cancel ? 'disconnect-callback' : 'connect-callback'),
-        cancel
+        redirectUrl: location.origin + location.pathname + '/connect-callback',
+        shopId: this.shopId
       }
     })
 
-    return response.data.getShopeeAuthURL
+    return response.data.getShopifyAuthURL
   }
 
   async handleConnectCallback() {
     const response = await client.mutate({
       mutation: gql`
         mutation($id: String!, $code: String!, $shopId: String!) {
-          generateShopeeAccessToken(id: $id, code: $code, shopId: $shopId) ${MARKETPLACE_STORE_RESULT}
+          generateShopifyAccessToken(id: $id, code: $code, shopId: $shopId) ${MARKETPLACE_STORE_RESULT}
         }
       `,
       variables: {
@@ -135,7 +141,7 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
       }
     })
 
-    this.marketplaceStore = response.data.generateShopeeAccessToken
+    this.marketplaceStore = response.data.generateShopifyAccessToken
     var { status, name } = this.marketplaceStore
 
     document.dispatchEvent(
@@ -153,7 +159,7 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
     var response = await client.mutate({
       mutation: gql`
         mutation($name: String!) {
-          deactivateShopeeStore(name: $name) ${MARKETPLACE_STORE_RESULT}
+          deactivateShopifyStore(name: $name) ${MARKETPLACE_STORE_RESULT}
         }
       `,
       variables: {
@@ -161,7 +167,7 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
       }
     })
 
-    this.marketplaceStore = response.data.deactivateShopeeStore
+    this.marketplaceStore = response.data.deactivateShopifyStore
     var { status } = this.marketplaceStore
     this.code = ''
     this.shopId = ''
@@ -177,12 +183,12 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
   }
 
   async activate() {
-    location.href = await this.getShopeeAuthURL(false)
+    location.href = await this.getShopifyAuthURL(false)
   }
 
   async deactivate() {
-    location.href = await this.getShopeeAuthURL(true)
+    location.href = await this.getShopifyAuthURL(true)
   }
 }
 
-customElements.define('marketplace-store-shopee', MarketplaceStoreShopee)
+customElements.define('marketplace-store-shopify', MarketplaceStoreShopify)
