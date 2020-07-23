@@ -5,7 +5,7 @@ import '../../server/controllers/lazada'
 import { store } from './lazada-test-store'
 
 describe('Lazada', function () {
-  this.timeout(5000)
+  this.timeout(20000)
 
   describe('getStoreProductCategories', function () {
     it('should return store product categories', async function () {

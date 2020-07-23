@@ -1,11 +1,11 @@
 export const Endpoint = {
-  SINGAPORE: 'https://api.lazada.sg/rest',
-  THAILAND: 'https://api.lazada.co.th/rest',
-  MALAYSIA: 'https://api.lazada.com.my/rest',
-  VIETNAM: 'https://api.lazada.vn/rest',
-  PHILIPPINES: 'https://api.lazada.com.ph/rest',
-  INDONESIA: 'https://api.lazada.co.id/rest',
-  AUTH: 'https://auth.lazada.com/rest'
+  sg: 'https://api.lazada.sg/rest',
+  th: 'https://api.lazada.co.th/rest',
+  my: 'https://api.lazada.com.my/rest',
+  vn: 'https://api.lazada.vn/rest',
+  ph: 'https://api.lazada.com.ph/rest',
+  id: 'https://api.lazada.co.id/rest',
+  auth: 'https://auth.lazada.com/rest'
 }
 
 export type Parameter = {

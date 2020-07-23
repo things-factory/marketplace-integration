@@ -4,7 +4,7 @@ import { StoreAPI } from '../../server/controllers/store-api'
 import { stores } from './test-stores'
 
 describe('StoreAPI', function () {
-  this.timeout(5000)
+  this.timeout(20000)
 
   describe('getStoreOrders', function () {
     it('should return store products', async function () {

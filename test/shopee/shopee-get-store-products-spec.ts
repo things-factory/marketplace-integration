@@ -5,7 +5,7 @@ import '../../server/controllers/shopee'
 import { store } from './shopee-test-store'
 
 describe('Shopee', function () {
-  this.timeout(5000)
+  this.timeout(20000)
 
   describe('getStoreProducts', function () {
     it('should return store products', async function () {

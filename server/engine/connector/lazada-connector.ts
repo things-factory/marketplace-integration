@@ -1,7 +1,7 @@
 import { Connections, Connector } from '@things-factory/integration-base'
 import { getRepository } from 'typeorm'
 import { MarketplaceStore } from '../../entities'
-import { Endpoint, Lazada } from '../../controllers/lazada'
+import { Lazada } from '../../controllers/lazada'
 
 import { config } from '@things-factory/env'
 const lazadaConfig = config.get('marketplaceIntegrationLazada', {})
@@ -22,8 +22,7 @@ export class LazadaConnector implements Connector {
       where: { domain, storeId }
     })
 
-    // TODO Fill Endpoint from marketplaceStore.countryCode
-    const client = new Lazada(Endpoint.MALAYSIA, appKey, appSecret)
+    const client = new Lazada(marketplaceStore.countryCode, appKey, appSecret)
     client.accessToken = marketplaceStore.accessToken
 
     Connections.addConnection(name, client)

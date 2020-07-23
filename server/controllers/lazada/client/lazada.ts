@@ -8,8 +8,8 @@ export class Lazada {
   appSecret: string
   accessToken: string
 
-  constructor(endpoint: string, appKey: string, appSecret: string) {
-    this.endpoint = endpoint
+  constructor(countryCode: string, appKey: string, appSecret: string) {
+    this.endpoint = Endpoint[countryCode]
     this.appKey = appKey
     this.appSecret = appSecret
   }
@@ -25,7 +25,7 @@ export class Lazada {
       ...makeSystemParameters(this.appKey, this.appSecret, apiPath, undefined, payload)
     }
 
-    const response = await fetch(Endpoint.AUTH + apiPath, {
+    const response = await fetch(Endpoint.auth + apiPath, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export class Lazada {
       ...makeSystemParameters(this.appKey, this.appSecret, apiPath, undefined, payload)
     }
 
-    const response = await fetch(Endpoint.AUTH + apiPath, {
+    const response = await fetch(Endpoint.auth + apiPath, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
