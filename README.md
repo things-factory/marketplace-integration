@@ -1,9 +1,9 @@
 # Marketplace Integration module
 
 - support 10+ marketplace platforms
-  -- lazada, shopee, zalora, qoo10, ...
+  - lazada, shopee, zalora, qoo10, ...
 - unified API
-  -- By integrating different APIs of various platforms, one standard API can be used.
+  - By integrating different APIs of various platforms, one standard API can be used.
 
 ## development
 
