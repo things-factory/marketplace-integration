@@ -1,7 +1,16 @@
 # Marketplace Integration module
 
 - support 10+ marketplace platforms
-  - lazada, shopee, zalora, qoo10, ...
+  - lazada https://open.lazada.com
+  - shopee https://open.shopee.com
+  - zalora
+  - taobao https://open.taobao.com
+  - qoo10
+  - amazon
+  - lelong
+  - shopclues
+  - magento
+  - flipkart
 - unified API
   - By integrating different APIs of various platforms, one standard API can be used.
 
@@ -9,7 +18,10 @@
 
 ### TDD (Test Driven Development)
 
-- using frameworks : chai(https://www.chaijs.com/), mocha(https://mochajs.org/), should(https://github.com/shouldjs/should.js)
+- using frameworks
+  - chai(https://www.chaijs.com/)
+  - mocha(https://mochajs.org/)
+  - should(https://github.com/shouldjs/should.js)
 - usages
 
 ```
