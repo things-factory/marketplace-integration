@@ -12,6 +12,7 @@ export const api = (target: Object, property: string, descriptor: TypedPropertyD
     const StoreAPI = this
 
     var { platform } = store
+
     var { action: platformAction, apis } = StoreAPI.getPlatform(platform)
 
     var m = apis[method.name]

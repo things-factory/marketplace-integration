@@ -1,5 +1,4 @@
 import { Connections, Connector } from '@things-factory/integration-base'
-import { StoreAPI } from '../../controllers/store-api'
 
 export class MarketplaceConnector implements Connector {
   async ready(connectionConfigs) {
@@ -9,11 +8,9 @@ export class MarketplaceConnector implements Connector {
   }
 
   async connect(connection) {
-    const { domain, name, endpoint: storeId } = connection
+    const { domain, name, endpoint } = connection
 
-    const client = new StoreAPI()
-
-    Connections.addConnection(name, client)
+    Connections.addConnection(name, { ...connection })
 
     Connections.logger.info(`marketplace-connector connection(${name}:${connection.endpoint}) is connected`)
   }

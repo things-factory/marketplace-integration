@@ -2,6 +2,7 @@ import { Connections, TaskRegistry } from '@things-factory/integration-base'
 import { access } from '@things-factory/utils'
 import { getRepository } from 'typeorm'
 import { MarketplaceStore } from '../../entities'
+import { StoreAPI } from '../../controllers/store-api'
 
 async function MarketplaceAPI(step, { logger, data, domain }) {
   var {
@@ -20,10 +21,14 @@ async function MarketplaceAPI(step, { logger, data, domain }) {
 
   const repository = getRepository(MarketplaceStore)
   const marketplaceStore: any = await repository.findOne({
-    where: { domain, id: store }
+    where: { domain: domain.id, name: store }
   })
 
-  var result = await client[api](marketplaceStore, accessor ? access(accessor, data) : {})
+  if (!marketplaceStore) {
+    throw new Error(`no marketplace-store defined`)
+  }
+
+  var result = await StoreAPI[api](marketplaceStore, accessor ? access(accessor, data) : {})
 
   return {
     data: result
@@ -34,7 +39,11 @@ MarketplaceAPI.parameterSpec = [
   {
     type: 'entity-selector',
     name: 'store',
-    label: 'store'
+    label: 'store',
+    property: {
+      queryName: 'marketplaceStores',
+      valueKey: 'name'
+    }
   },
   {
     type: 'select',
@@ -43,11 +52,11 @@ MarketplaceAPI.parameterSpec = [
     property: {
       options: [
         '',
-        'get-ariway-bill',
-        'get-store-order',
-        'get-store-product-categories',
-        'get-store-product-category-attributes',
-        'get-store-products'
+        'getAriwayBill',
+        'getStoreOrder',
+        'getStoreProductCategories',
+        'getStoreProductCategoryAttributes',
+        'getStoreProducts'
       ]
     }
   },
