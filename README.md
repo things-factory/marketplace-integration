@@ -1,19 +1,16 @@
 # Marketplace Integration module
 
 - support 10+ marketplace platforms
-
-* lazada, shopee, zalora, qoo10, ...
-
+  -- lazada, shopee, zalora, qoo10, ...
 - unified API
-
-* By integrating different APIs of various platforms, one standard API can be used.
+  -- By integrating different APIs of various platforms, one standard API can be used.
 
 ## development
 
-- TDD (Test Driven Development)
+### TDD (Test Driven Development)
 
-* using frameworks : chai, mocha, should
-* usages
+- using frameworks : chai, mocha, should
+- usages
 
 ```
 # test all tests
@@ -24,6 +21,6 @@ $ DEBUG=things-factory:* NODE_ENV=development npx mocha -r ts-node/register ./te
 $ DEBUG=things-factory:* NODE_ENV=development npx mocha -r ts-node/register ./test/store-api/get-store-products-spec.ts
 ```
 
-- debug module
+### debug module
 
-* https://www.npmjs.com/package/debug
+- https://www.npmjs.com/package/debug
