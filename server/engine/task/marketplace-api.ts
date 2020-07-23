@@ -53,7 +53,7 @@ MarketplaceAPI.parameterSpec = [
       options: [
         '',
         'getAriwayBill',
-        'getStoreOrder',
+        'getStoreOrders',
         'getStoreProductCategories',
         'getStoreProductCategoryAttributes',
         'getStoreProducts'
