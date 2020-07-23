@@ -37,5 +37,5 @@ export class StoreAPI {
   static getStoreProducts(store, req): any {}
 
   @api
-  static getStoreOrder(store, req): any {}
+  static getStoreOrders(store, req): any {}
 }

@@ -8,6 +8,10 @@ export const action = async ({ store, method = 'get', path, request }) => {
   // TODO Fill Endpoint from store.countryCode
   const client = new Lazada(Endpoint.MALAYSIA, appKey, appSecret)
 
-  var { data: result } = await client[method == 'post' ? 'post' : 'get'](path, request, store.accessToken)
-  return result
+  var response = await client[method == 'post' ? 'post' : 'get'](path, request, store.accessToken)
+  if (!response.data) {
+    throw response
+  }
+
+  return response.data
 }

@@ -1,5 +1,5 @@
 import Debug from 'debug'
-const debug = Debug('things-factory:marketplace-integration')
+const debug = Debug('things-factory:marketplace-integration:store-api-decorator')
 
 import { MarketplaceStore } from 'server/entities'
 
@@ -16,6 +16,9 @@ export const api = (target: Object, property: string, descriptor: TypedPropertyD
     var { action: platformAction, apis } = StoreAPI.getPlatform(platform)
 
     var m = apis[method.name]
+    if (!m) {
+      throw Error(`Marketplace Platform '${platform}' doesn't have API ${method.name}`)
+    }
 
     var {
       path,
@@ -25,7 +28,7 @@ export const api = (target: Object, property: string, descriptor: TypedPropertyD
       action = platformAction
     } = m.apply(this, [request])
 
-    var denormalized = denormalize(request)
+    var denormalized = denormalize(request || {})
     debug('request', denormalized)
 
     var response = await action.apply(this, [{ store, httpMethod, path, request: denormalized, platformAction }])

@@ -1,3 +1,5 @@
+/* https://open.shopee.com/documents?module=2&type=1&id=372 */
+
 export function getStoreProductCategoryAttributes() {
   return {
     path: '/item/attributes/get',
