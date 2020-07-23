@@ -5,7 +5,7 @@
   - shopee https://open.shopee.com
   - zalora
   - taobao https://open.taobao.com
-  - qoo10
+  - qoo10 https://api.qoo10.sg/GMKT.INC.Front.QApiService/document/QAPIGuideIndex.aspx
   - amazon
   - lelong
   - shopclues
