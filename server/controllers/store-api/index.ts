@@ -18,7 +18,11 @@ export class StoreAPI {
 
   static async getMarketplaceStore(id) {
     const repository = getRepository(MarketplaceStore)
-    return await repository.find(id)
+    // return await repository.find(id)
+    return await repository.findOne({
+      where: { id },
+      relations: ['domain']
+    })
   }
 
   @api

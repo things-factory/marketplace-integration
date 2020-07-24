@@ -7,7 +7,7 @@ import { ScrollbarStyles } from '@things-factory/styles'
 
 import '@things-factory/form-ui'
 
-class IntegrationStores extends localize(i18next)(PageView) {
+class MarketplaceStores extends localize(i18next)(PageView) {
   static get styles() {
     return [
       ScrollbarStyles,
@@ -116,7 +116,8 @@ class IntegrationStores extends localize(i18next)(PageView) {
             options: [
               '',
               'lazada',
-              'shopee' /*, 'zalora', 'qoo10', 'amazon', 'lelong', 'shopclues', 'magento', 'flipkart'*/
+              'shopee',
+              'shopify' /*, 'zalora', 'qoo10', 'amazon', 'lelong', 'shopclues', 'magento', 'flipkart'*/
             ]
           },
           sortable: true,
@@ -127,7 +128,7 @@ class IntegrationStores extends localize(i18next)(PageView) {
           name: 'storeId',
           header: i18next.t('field.store-id'),
           record: {
-            editable: false
+            editable: true
           },
           sortable: false,
           width: 180
@@ -325,4 +326,4 @@ class IntegrationStores extends localize(i18next)(PageView) {
   }
 }
 
-customElements.define('marketplace-stores', IntegrationStores)
+customElements.define('marketplace-stores', MarketplaceStores)

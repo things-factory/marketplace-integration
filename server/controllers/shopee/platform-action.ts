@@ -12,12 +12,10 @@ export const action = async ({ store, path, request }) => {
     partner_key: partnerKey
   })
 
-  var body = await client.post(path, request)
-  if (body.error) {
-    throw body
+  var response = await client.post(path, request)
+  if (response.error) {
+    throw response
   }
 
-  return {
-    data: body
-  }
+  return response
 }

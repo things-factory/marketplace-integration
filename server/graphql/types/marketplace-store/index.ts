@@ -36,11 +36,21 @@ export const Mutation = `
     shopId: String!
   ): MarketplaceStore
 
+  generateShopifyAccessToken (
+    id: String!
+    code: String!
+    shopId: String!
+  ): MarketplaceStore
+
   deactivateShopeeStore (
     name: String!
   ): MarketplaceStore
 
   deactivateLazadaStore (
+    name: String!
+  ): MarketplaceStore
+
+  deactivateShopifyStore (
     name: String!
   ): MarketplaceStore
 `
@@ -56,6 +66,12 @@ export const Query = `
   getShopeeAuthURL (
     redirectUrl: String!
     cancel: Boolean
+  ): String
+  
+  getShopifyAuthURL (
+    storeId: String!
+    nonce: String!
+    redirectUrl: String!
   ): String
 `
 
