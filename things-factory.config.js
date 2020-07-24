@@ -15,6 +15,10 @@ export default {
     {
       tagname: 'marketplace-store-shopee',
       page: 'marketplace-store-shopee'
+    },
+    {
+      tagname: 'marketplace-store-shopify',
+      page: 'marketplace-store-shopify'
     }
   ],
   bootstrap

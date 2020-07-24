@@ -12,7 +12,7 @@ const MARKETPLACE_STORE_RESULT = `{
   status
 }`
 
-class MarketplaceStoreShopee extends connect(store)(PageView) {
+class MarketplaceStoreShopify extends connect(store)(PageView) {
   static get styles() {
     return css`
       :host {
@@ -30,19 +30,19 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
     return {
       id: String,
       marketplaceStore: Object,
-      shopId: String,
-      code: String
+      code: String,
+      shopId: String
     }
   }
 
   get context() {
     return {
-      title: 'store Shopee'
+      title: 'store shopify'
     }
   }
 
   render() {
-    var { name = '', status = '', storeId = '', countryCode = '', accessInfo = '' } = this.marketplaceStore || {}
+    var { name = '', storeId = '', status = '', countryCode = '', accessInfo = '' } = this.marketplaceStore || {}
 
     return html`
       <a href="marketplace-stores">Stores</a>
@@ -61,15 +61,15 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
             <div>
               <label>auth-code</label>
               <input type="text" .value=${this.code || ''} disabled />
-              <label>shop ID</label>
-              <input type="text" .value=${this.shopId || ''} disabled />
             </div>
           `}
 
       <div>
-        ${status == 'active'
-          ? html`<button @click=${e => this.deactivate(name)}>disconnect this store</button>`
-          : html`<button @click=${e => this.activate(name)}>connect this store</button>`}
+        <div>
+          ${status == 'active'
+            ? html`<button @click=${e => this.deactivate(name)}>disconnect this store</button>`
+            : html`<button @click=${e => this.activate(name)}>connect this store</button>`}
+        </div>
       </div>
     `
   }
@@ -80,7 +80,7 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
     if (changes.resourceId) {
       this.id = changes.resourceId
 
-      var response = await client.query({
+      const response = await client.query({
         query: gql`
           query($id: String!) {
             marketplaceStore(id: $id) ${MARKETPLACE_STORE_RESULT}
@@ -92,50 +92,50 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
       })
 
       this.marketplaceStore = response.data.marketplaceStore
+      this.storeId = this.marketplaceStore.storeId
 
-      if (location.pathname.endsWith('disconnect-callback')) {
-        await this.handleDisconnectCallback()
-      } else if (location.pathname.endsWith('connect-callback')) {
-        let { code, shop_id } = changes.params
+      if (location.pathname.endsWith('connect-callback')) {
+        let { code } = changes.params
         this.code = code
-        this.shopId = shop_id
 
         await this.handleConnectCallback()
       }
     }
   }
 
-  async getShopeeAuthURL(cancel = false) {
+  async getShopifyAuthURL() {
+    console.log('nonce', this.id)
     var response = await client.query({
       query: gql`
-        query($redirectUrl: String!, $cancel: Boolean) {
-          getShopeeAuthURL(redirectUrl: $redirectUrl, cancel: $cancel)
+        query($redirectUrl: String!, $nonce: String!, $storeId: String!) {
+          getShopifyAuthURL(storeId: $storeId, nonce: $nonce, redirectUrl: $redirectUrl)
         }
       `,
       variables: {
-        redirectUrl: location.origin + location.pathname + '/' + (cancel ? 'disconnect-callback' : 'connect-callback'),
-        cancel
+        storeId: this.storeId,
+        nonce: this.id,
+        redirectUrl: location.origin + '/callback-shopify'
       }
     })
 
-    return response.data.getShopeeAuthURL
+    return response.data.getShopifyAuthURL
   }
 
   async handleConnectCallback() {
     const response = await client.mutate({
       mutation: gql`
         mutation($id: String!, $code: String!, $shopId: String!) {
-          generateShopeeAccessToken(id: $id, code: $code, shopId: $shopId) ${MARKETPLACE_STORE_RESULT}
+          generateShopifyAccessToken(id: $id, code: $code, shopId: $shopId) ${MARKETPLACE_STORE_RESULT}
         }
       `,
       variables: {
         id: this.id,
         code: this.code,
-        shopId: this.shopId
+        shopId: this.storeId
       }
     })
 
-    this.marketplaceStore = response.data.generateShopeeAccessToken
+    this.marketplaceStore = response.data.generateShopifyAccessToken
     var { status, name } = this.marketplaceStore
 
     document.dispatchEvent(
@@ -148,12 +148,17 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
     )
   }
 
-  async handleDisconnectCallback() {
+  async activate() {
+    location.href = await this.getShopifyAuthURL()
+  }
+
+  async deactivate() {
     var { name } = this.marketplaceStore
+
     var response = await client.mutate({
       mutation: gql`
         mutation($name: String!) {
-          deactivateShopeeStore(name: $name) ${MARKETPLACE_STORE_RESULT}
+          deactivateShopifyStore(name: $name) ${MARKETPLACE_STORE_RESULT}
         }
       `,
       variables: {
@@ -161,10 +166,9 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
       }
     })
 
-    this.marketplaceStore = response.data.deactivateShopeeStore
+    this.marketplaceStore = response.data.deactivateShopifyStore
     var { status } = this.marketplaceStore
     this.code = ''
-    this.shopId = ''
 
     document.dispatchEvent(
       new CustomEvent('notify', {
@@ -175,14 +179,6 @@ class MarketplaceStoreShopee extends connect(store)(PageView) {
       })
     )
   }
-
-  async activate() {
-    location.href = await this.getShopeeAuthURL(false)
-  }
-
-  async deactivate() {
-    location.href = await this.getShopeeAuthURL(true)
-  }
 }
 
-customElements.define('marketplace-store-shopee', MarketplaceStoreShopee)
+customElements.define('marketplace-store-shopify', MarketplaceStoreShopify)

@@ -9,12 +9,14 @@ import { deleteMarketplaceStores } from './delete-marketplace-stores'
 
 import * as Lazada from './lazada'
 import * as Shopee from './shopee'
+import * as Shopify from './shopify'
 
 export const Query = {
   ...marketplaceStoresResolver,
   ...marketplaceStoreResolver,
   ...Lazada.Query,
-  ...Shopee.Query
+  ...Shopee.Query,
+  ...Shopify.Query
 }
 
 export const Mutation = {
@@ -24,5 +26,6 @@ export const Mutation = {
   ...deleteMarketplaceStore,
   ...deleteMarketplaceStores,
   ...Lazada.Mutation,
-  ...Shopee.Mutation
+  ...Shopee.Mutation,
+  ...Shopify.Mutation
 }
