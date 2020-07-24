@@ -1,6 +1,5 @@
 export const store = {
   platform: 'shopify',
   storeId: 'hatio-apparel',
-  accessToken: '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',
-  countryCode: 'my'
+  accessToken: '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'
 }
