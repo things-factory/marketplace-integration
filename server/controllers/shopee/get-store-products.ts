@@ -15,7 +15,7 @@ export function getStoreProducts() {
       }
     },
     normalize(res) {
-      return res.data.items
+      return res.items
     }
   }
 }

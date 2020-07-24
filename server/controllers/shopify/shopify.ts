@@ -8,6 +8,7 @@ export type ShopifyConfig = {
   apiKey: string
   apiSecret: string
   shop: string
+  accessToken?: string
 }
 
 export class Shopify {
@@ -19,15 +20,11 @@ export class Shopify {
     }
   }
 
-  getBaseUrl() {
-    return `https://${this.config.shop}.myshopify.com/admin/oauth/access_token`
-  }
-
   buildAuthURL(redirectUrl, nonce) {
     // TODO set accessMode properly https://shopify.dev/tutorials/authenticate-with-oauth#step-2-ask-for-permission
     var accessMode = 'per-user'
     // TODO make scopes properly
-    var scopes = 'write_orders,read_customers'
+    var scopes = 'read_products,write_orders,read_customers'
 
     var { shop, apiKey } = this.config
 
@@ -35,29 +32,43 @@ export class Shopify {
     // return `https://${storeId}.myshopify.com/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUrl}&state=${nonce}`
   }
 
-  generateAuthorization(path, data) {
-    const message = `${this.getBaseUrl() + path}|${data}`
-    return crypto.createHmac('sha256', this.config.apiSecret).update(message).digest('hex')
+  async get(path: string, data: any) {
+    const { shop, accessToken } = this.config
+
+    const qs = Object.entries(data)
+      .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)
+      .join('&')
+
+    const endpoint = `https://${shop}.myshopify.com/admin/api/2020-07${path}${qs ? '?' + qs : ''}`
+    debug('endpoint', endpoint)
+
+    const response = await fetch(endpoint, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': accessToken
+      }
+    })
+
+    const result = await response.json()
+    debug('response result', result)
+
+    return result
   }
 
-  async post(endpoint, data: any = {}) {
-    const { apiKey, shop } = this.config
-
-    data.apiKey = apiKey
-    data.timestamp = Math.floor(Date.now() / 1000)
-    if (shop) {
-      data.shop = shop
-    }
+  async post(path: string, data: any = {}) {
+    const { shop, accessToken } = this.config
 
     debug('data', data)
 
     const jsondata = JSON.stringify(data)
 
-    const response = await fetch(this.getBaseUrl() + endpoint, {
+    const endpoint = `https://${shop}.myshopify.com/admin/api/2020-07${path}`
+
+    const response = await fetch(endpoint, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: this.generateAuthorization(endpoint, jsondata)
+        'X-Shopify-Access-Token': accessToken
       },
       body: jsondata
     })

@@ -12,7 +12,7 @@ export function getStoreProductCategoryAttributes() {
       }
     },
     normalize(res) {
-      return res.data.attributes
+      return res.attributes
     }
   }
 }

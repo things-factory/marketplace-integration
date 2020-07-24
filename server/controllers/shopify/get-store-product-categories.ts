@@ -13,7 +13,7 @@ export function getStoreProductCategories() {
       }
     },
     normalize(res) {
-      return res.data.categories
+      return res.categories
     }
   }
 }

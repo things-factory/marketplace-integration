@@ -1,21 +1,14 @@
-/* https://open.shopee.com/documents?module=2&type=1&id=375 */
+/* https://shopify.dev/docs/admin-api/rest/reference/products/product?api[version]=2020-07#index-2020-07 */
 
 export function getStoreProducts() {
   return {
-    path: '/items/get',
+    method: 'get',
+    path: '/products.json',
     denormalize(req) {
-      var { pagination } = req || {}
-      var { page = 0, limit = 100 } = pagination || {}
-
-      return {
-        pagination_entries_per_page: limit,
-        pagination_offset: page
-        // update_time_from,
-        // update_time_to
-      }
+      return {}
     },
     normalize(res) {
-      return res.data.items
+      return res.products
     }
   }
 }

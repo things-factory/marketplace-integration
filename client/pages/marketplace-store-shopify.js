@@ -114,7 +114,6 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
       variables: {
         storeId: this.storeId,
         nonce: this.id,
-        // redirectUrl: location.origin + location.pathname + '/connect-callback'
         redirectUrl: location.origin + '/callback-shopify'
       }
     })

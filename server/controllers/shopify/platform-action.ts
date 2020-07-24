@@ -4,19 +4,18 @@ import { config } from '@things-factory/env'
 const shopifyConfig = config.get('marketplaceIntegrationShopify', {})
 const { apiKey, apiSecret } = shopifyConfig
 
-export const action = async ({ store, path, request }) => {
+export const action = async ({ store, method = 'get', path, request }) => {
   const client = new Shopify({
     shop: store.storeId,
     apiKey,
-    apiSecret
+    apiSecret,
+    accessToken: store.accessToken
   })
 
-  var body = await client.post(path, request)
-  if (body.error) {
-    throw body
+  var response = await client[method](path, request)
+  if (response.errors) {
+    throw response
   }
 
-  return {
-    data: body
-  }
+  return response
 }

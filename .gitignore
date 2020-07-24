@@ -7,8 +7,7 @@ attachments/
 ormconfig.js
 yarn*.*
 package-lock.json
-/config.development.*
-/config.production.*
+/config.*
 db.sqlite
 .DS_Store
 .vscode
