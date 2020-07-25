@@ -62,7 +62,7 @@ export class Zalora {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: xmlize(payload)
+      body: payload ? xmlize(payload) : ''
     })
 
     return await response.json()
