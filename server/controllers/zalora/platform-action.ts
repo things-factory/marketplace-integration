@@ -14,5 +14,5 @@ export const action = async ({ store, path, method = 'get', request }) => {
     throw response
   }
 
-  return response.Body
+  return response.SuccessResponse?.Body
 }

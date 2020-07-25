@@ -14,7 +14,7 @@ export function getStoreProductCategoryAttributes() {
       }
     },
     normalize(res) {
-      return res.attributes
+      return res.Attributes.Attribute
     }
   }
 }

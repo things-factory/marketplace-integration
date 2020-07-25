@@ -14,7 +14,7 @@ export function getStoreProductCategories() {
       }
     },
     normalize(res) {
-      return res.categories
+      return res.Categories.Category
     }
   }
 }

@@ -14,7 +14,7 @@ export function getStoreOrders() {
       }
     },
     normalize(res) {
-      return res.orders
+      return res.Orders.Order
     }
   }
 }
