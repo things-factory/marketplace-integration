@@ -19,17 +19,19 @@ function makeSignature(apiKey: string, params: Parameter): string {
   return crypto.createHmac('sha256', apiKey).update(sorted).digest('hex')
 }
 
-export function makeQueryString({ userId, action, apiKey }): string {
-  const ps = {
+export function makeQueryString({ userId, action, apiKey, query }): string {
+  const signatureParams = {
     UserID: userId,
     Version: '1.0',
     Action: action,
     Format: 'JSON',
-    Timestamp: new Date().toISOString()
+    Timestamp: new Date().toISOString(),
+    ...query
   }
 
   return querystring({
-    ...ps,
-    Signature: makeSignature(apiKey, ps)
+    ...signatureParams,
+    Signature: makeSignature(apiKey, signatureParams),
+    ...query
   })
 }

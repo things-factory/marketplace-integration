@@ -1,14 +1,16 @@
-/* https://open.zalora.com/documents?module=2&type=1&id=372 */
-
 export function getStoreProductCategoryAttributes() {
   return {
-    path: '/item/attributes/get',
+    method: 'get',
+    path: 'GetCategoryAttributes',
     denormalize(req) {
-      var { categoryId, isCrossBorder = true } = req
+      var { pagination } = req || {}
+      var { page = 0, limit = 100 } = pagination || {}
 
       return {
-        category_id: categoryId,
-        is_cb: isCrossBorder
+        query: {
+          Limit: limit,
+          Offset: page * limit
+        }
       }
     },
     normalize(res) {

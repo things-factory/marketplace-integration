@@ -1,13 +1,15 @@
 import { Zalora } from './zalora'
 
-export const action = async ({ store, path, request }) => {
+export const action = async ({ store, path, method = 'get', request }) => {
   const client = new Zalora({
     apiKey: store.accessToken,
     userId: store.storeId,
     countryCode: store.countryCode?.toLowerCase()
   })
 
-  var response = await client.post(path, request)
+  const { query, payload } = request
+
+  var response = await client[method.toLowerCase()](path, query, payload)
   if (response.ErrorResponse) {
     throw response
   }

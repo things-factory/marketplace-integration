@@ -24,24 +24,45 @@ export class Zalora {
     return `https://sellercenter-api.zalora.com.${this.config.countryCode}`
   }
 
-  async post(action, request: any) {
+  async get(action, query) {
     var endpoint =
       this.getBaseUrl() +
       '?' +
       makeQueryString({
         userId: this.config.userId,
         action,
-        apiKey: this.config.apiKey
+        apiKey: this.config.apiKey,
+        query
       })
 
     debug('endpoint', endpoint)
 
     const response = await fetch(endpoint, {
-      method: 'POST',
+      method: 'get'
+    })
+
+    return await response.json()
+  }
+
+  async post(action, query: any, payload: any) {
+    var endpoint =
+      this.getBaseUrl() +
+      '?' +
+      makeQueryString({
+        userId: this.config.userId,
+        action,
+        apiKey: this.config.apiKey,
+        query
+      })
+
+    debug('endpoint', endpoint)
+
+    const response = await fetch(endpoint, {
+      method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: OBJtoXML(request)
+      body: OBJtoXML(payload)
     })
 
     return await response.json()

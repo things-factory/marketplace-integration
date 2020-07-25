@@ -74,6 +74,6 @@ $ DEBUG=things-factory:* NODE_ENV=development npx mocha -r ts-node/register ./te
 - apiKey가 digital sign 시에 사용된다. digital sign은 payload에 포함된다. (request header 사용안함.)
 - country-code 별로 endpoint가 다르다.
 - API별 action 코드가 querystring(Action 키)에 지정된다.
-- 'POST' 메쏘드 만을 사용한다.
-- request body는 XML 포맷을 사용한다.
+- 'get', 'post' 메쏘드 만을 사용한다.
+- post인 경우에는 query string과 request body(XML 포맷)을 동시에 사용한다.
 - response 는 XML 또는 JSON 포맷을 지정할 수 있는데, querystring(Format 키)에 지정한다.
