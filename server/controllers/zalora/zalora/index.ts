@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import Debug from 'debug'
 import { makeQueryString } from './signature'
-import { OBJtoXML } from './xml'
+import { xmlize } from './xml'
 
 const debug = Debug('things-factory:marketplace-integration:zalora')
 
@@ -62,7 +62,7 @@ export class Zalora {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: OBJtoXML(payload)
+      body: xmlize(payload)
     })
 
     return await response.json()

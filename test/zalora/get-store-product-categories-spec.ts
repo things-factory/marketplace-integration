@@ -4,7 +4,7 @@ import { StoreAPI } from '../../server/controllers/store-api'
 import '../../server/controllers/zalora'
 import { store } from './test-store'
 
-describe('Shopify', function () {
+describe('Zalora', function () {
   this.timeout(20000)
 
   describe('getStoreProductCategories', function () {

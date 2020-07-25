@@ -1,4 +1,4 @@
-export function OBJtoXML(obj) {
+function OBJtoXML(obj) {
   var xml = ''
   for (var prop in obj) {
     xml += obj[prop] instanceof Array ? '' : '<' + prop + '>'
@@ -17,4 +17,8 @@ export function OBJtoXML(obj) {
   }
   var xml = xml.replace(/<\/?[0-9]{1,}>/g, '')
   return xml
+}
+
+export function xmlize(obj) {
+  return '<?xml version="1.0" encoding="UTF-8" ?>' + OBJtoXML(obj)
 }
