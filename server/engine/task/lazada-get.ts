@@ -32,7 +32,9 @@ LazadaGet.parameterSpec = [
         '/items/get',
         '/shop/get_partner_shop',
         '/shop_categorys/get',
-        '/orders/basics'
+        '/orders/basics',
+        '/order/items/get',
+        '/order/document/get'
       ]
     }
   },

@@ -31,7 +31,7 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
       id: String,
       marketplaceStore: Object,
       code: String,
-      shopId: String
+      storeId: String
     }
   }
 
@@ -49,20 +49,11 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
 
       <h2>${name}</h2>
       <h3>status: ${status || 'inactive'}</h3>
-      <h3>store id: ${storeId}</h3>
+      <h3>store id (should be defined): ${storeId}</h3>
       <h3>country: ${countryCode}</h3>
 
       <h3>access information (to be hidden)</h3>
       <textarea .value=${accessInfo}> </textarea>
-
-      ${status == 'active'
-        ? html``
-        : html`
-            <div>
-              <label>auth-code</label>
-              <input type="text" .value=${this.code || ''} disabled />
-            </div>
-          `}
 
       <div>
         <div>
@@ -104,7 +95,6 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
   }
 
   async getShopifyAuthURL() {
-    console.log('nonce', this.id)
     var response = await client.query({
       query: gql`
         query($redirectUrl: String!, $nonce: String!, $storeId: String!) {
@@ -149,6 +139,19 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
   }
 
   async activate() {
+    if (!this.storeId) {
+      document.dispatchEvent(
+        new CustomEvent('notify', {
+          detail: {
+            level: 'error',
+            message: 'store id must be defined'
+          }
+        })
+      )
+
+      return
+    }
+
     location.href = await this.getShopifyAuthURL()
   }
 
