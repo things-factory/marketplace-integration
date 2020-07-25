@@ -18,5 +18,9 @@ export default function route(page) {
     case 'marketplace-store-shopify':
       import('./pages/marketplace-store-shopify')
       return page
+
+    case 'marketplace-store-zalora':
+      import('./pages/marketplace-store-zalora')
+      return page
   }
 }

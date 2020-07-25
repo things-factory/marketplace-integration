@@ -19,6 +19,10 @@ export default {
     {
       tagname: 'marketplace-store-shopify',
       page: 'marketplace-store-shopify'
+    },
+    {
+      tagname: 'marketplace-store-zalora',
+      page: 'marketplace-store-zalora'
     }
   ],
   bootstrap

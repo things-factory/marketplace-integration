@@ -117,7 +117,9 @@ class MarketplaceStores extends localize(i18next)(PageView) {
               '',
               'lazada',
               'shopee',
-              'shopify' /*, 'zalora', 'qoo10', 'amazon', 'lelong', 'shopclues', 'magento', 'flipkart'*/
+              'shopify',
+              'zalora'
+              /*, 'qoo10', 'amazon', 'lelong', 'shopclues', 'magento', 'flipkart'*/
             ]
           },
           sortable: true,

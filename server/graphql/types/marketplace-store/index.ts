@@ -42,6 +42,13 @@ export const Mutation = `
     shopId: String!
   ): MarketplaceStore
 
+  generateZaloraAccessToken (
+    id: String!
+    apiKey: String!
+    userId: String!
+    countryCode: String!
+  ): MarketplaceStore
+
   deactivateShopeeStore (
     name: String!
   ): MarketplaceStore
@@ -51,6 +58,10 @@ export const Mutation = `
   ): MarketplaceStore
 
   deactivateShopifyStore (
+    name: String!
+  ): MarketplaceStore
+
+  deactivateZaloraStore (
     name: String!
   ): MarketplaceStore
 `
