@@ -10,7 +10,7 @@ describe('Zalora', function () {
   describe('getStoreProductCategoryAttributes', function () {
     it('should return store product category attributes', async function () {
       const result = await StoreAPI.getStoreProductCategoryAttributes(store, {
-        categoryId: 12313
+        categoryId: 8846
       })
       expect(result.length).to.above(0)
     })
