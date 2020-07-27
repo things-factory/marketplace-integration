@@ -1,14 +1,14 @@
 import Debug from 'debug'
 const debug = Debug('things-factory:marketplace-integration:store-api-decorator')
 
-import { MarketplaceStore } from 'server/entities'
+import { MarketplaceStores } from 'server/entities'
 
 const NOOP = v => v
 
 export const api = (target: Object, property: string, descriptor: TypedPropertyDescriptor<any>): any => {
   const method = descriptor.value
 
-  descriptor.value = async function (store: MarketplaceStore, request) {
+  descriptor.value = async function (store: MarketplaceStores, request) {
     const StoreAPI = this
 
     var { platform } = store

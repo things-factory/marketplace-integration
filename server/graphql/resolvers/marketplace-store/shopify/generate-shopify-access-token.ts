@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import { getRepository } from 'typeorm'
-import { MarketplaceStore } from '../../../../entities'
+import { MarketplaceStores } from '../../../../entities'
 
 import { config } from '@things-factory/env'
 const shopifyConfig = config.get('marketplaceIntegrationShopify', {})
@@ -8,7 +8,7 @@ const { apiKey, apiSecret } = shopifyConfig
 
 export const generateShopifyAccessToken = {
   async generateShopifyAccessToken(_: any, { id, code, shopId }, context: any) {
-    const repository = getRepository(MarketplaceStore)
+    const repository = getRepository(MarketplaceStores)
     const marketplaceStore: any = await repository.findOne({
       where: { domain: context.state.domain, id }
     })
