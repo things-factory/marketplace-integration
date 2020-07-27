@@ -17,11 +17,12 @@ class MarketplaceStoreZalora extends connect(store)(PageView) {
     return css`
       :host {
         padding: 10px;
+        overflow-y: auto;
       }
 
       textarea {
         width: 800px;
-        height: 400px;
+        height: 200px;
       }
     `
   }
