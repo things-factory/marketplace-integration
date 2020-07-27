@@ -3,18 +3,16 @@ export function getStoreProductCategoryAttributes() {
     method: 'get',
     path: 'GetCategoryAttributes',
     denormalize(req) {
-      var { pagination } = req || {}
-      var { page = 0, limit = 100 } = pagination || {}
+      var { categoryId: PrimaryCategory } = req || {}
 
       return {
         query: {
-          Limit: limit,
-          Offset: page * limit
+          PrimaryCategory
         }
       }
     },
     normalize(res) {
-      return res.Attributes.Attribute
+      return res.Attribute
     }
   }
 }

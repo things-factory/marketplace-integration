@@ -12,9 +12,11 @@ describe('Zalora', function () {
       const result = await StoreAPI.getStoreOrders(store, {
         pagination: {
           page: 0,
-          limit: 100
+          limit: 10
         }
       })
+
+      console.log('result', JSON.stringify(result, null, 2))
       expect(Array.isArray(result)).to.be.true
     })
   })

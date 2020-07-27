@@ -9,7 +9,8 @@ export function getStoreOrders() {
       return {
         query: {
           Limit: limit,
-          Offset: page * limit
+          Offset: page * limit,
+          Status: 'pending'
         }
       }
     },

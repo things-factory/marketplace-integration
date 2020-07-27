@@ -1,12 +1,12 @@
 import { getStoreOrders } from './get-store-orders'
-import { getStoreOrderItem } from './get-store-order-item'
+import { getStoreOrderItems } from './get-store-order-items'
 import { getStoreOrderDocument } from './get-store-order-document'
 import { setStoreOrderStatus } from './set-store-order-status'
 import { acceptStoreOrderCancellation } from './accept-store-order-cancellation'
 import { rejectStoreOrderCancellation } from './reject-store-order-cancellation'
 import { cancelStoreOrder } from './cancel-store-order'
 
-export const Query = { ...getStoreOrders, ...getStoreOrderItem, ...getStoreOrderDocument }
+export const Query = { ...getStoreOrders, ...getStoreOrderItems, ...getStoreOrderDocument }
 
 export const Mutation = {
   ...setStoreOrderStatus,

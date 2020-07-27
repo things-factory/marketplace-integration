@@ -44,7 +44,10 @@ export class StoreAPI {
   static getStoreOrders(store, req): any {}
 
   @api
-  static getStoreOrderItem(store, req): any {}
+  static getStoreOrder(store, req): any {}
+
+  @api
+  static getStoreOrderItems(store, req): any {}
 
   @api
   static getStoreOrderDocument(store, req): any {}
