@@ -1,9 +1,9 @@
 import { getRepository, In } from 'typeorm'
-import { MarketplaceStore } from '../../../entities'
+import { MarketplaceStores } from '../../../entities'
 
 export const deleteMarketplaceStores = {
   async deleteMarketplaceStores(_: any, { names }, context: any) {
-    await getRepository(MarketplaceStore).delete({
+    await getRepository(MarketplaceStores).delete({
       domain: context.state.domain,
       name: In(names)
     })

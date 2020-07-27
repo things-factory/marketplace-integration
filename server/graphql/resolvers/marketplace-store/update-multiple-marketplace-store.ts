@@ -1,12 +1,12 @@
 import { getRepository } from 'typeorm'
-import { MarketplaceStore } from '../../../entities'
+import { MarketplaceStores } from '../../../entities'
 
 export const updateMultipleMarketplaceStore = {
   async updateMultipleMarketplaceStore(_: any, { patches }, context: any) {
     let results = []
     const _createRecords = patches.filter((patch: any) => patch.cuFlag.toUpperCase() === '+')
     const _updateRecords = patches.filter((patch: any) => patch.cuFlag.toUpperCase() === 'M')
-    const marketplaceStoreRepo = getRepository(MarketplaceStore)
+    const marketplaceStoreRepo = getRepository(MarketplaceStores)
 
     if (_createRecords.length > 0) {
       for (let i = 0; i < _createRecords.length; i++) {

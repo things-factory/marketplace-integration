@@ -1,9 +1,9 @@
 import { getRepository } from 'typeorm'
-import { MarketplaceStore } from '../../../entities'
+import { MarketplaceStores } from '../../../entities'
 
 export const createMarketplaceStore = {
   async createMarketplaceStore(_: any, { marketplaceStore }, context: any) {
-    return await getRepository(MarketplaceStore).save({
+    return await getRepository(MarketplaceStores).save({
       ...marketplaceStore,
       domain: context.state.domain,
       creator: context.state.user,

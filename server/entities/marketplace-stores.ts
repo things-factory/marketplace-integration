@@ -5,10 +5,10 @@ import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedCol
 @Entity()
 @Index(
   'ix_marketplace-store_0',
-  (marketplaceStore: MarketplaceStore) => [marketplaceStore.domain, marketplaceStore.name],
+  (marketplaceStores: MarketplaceStores) => [marketplaceStores.domain, marketplaceStores.name],
   { unique: true }
 )
-export class MarketplaceStore {
+export class MarketplaceStores {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
