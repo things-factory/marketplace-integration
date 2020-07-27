@@ -20,3 +20,4 @@ npm-debug.log
 nodemon.json
 tsconfig.json
 ormconfig.js
+/config.*
