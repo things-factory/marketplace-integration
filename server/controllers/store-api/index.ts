@@ -60,4 +60,7 @@ export class StoreAPI {
 
   @api
   static deleteStoreProduct(store, req): any {}
+
+  @api
+  static getStoreLogistics(store, req): any {}
 }

@@ -1,5 +1,8 @@
-import { config } from '@things-factory/env'
+import { StoreAPI } from '../../../controllers/store-api'
 
 export const getStoreLogistics = {
-  async getStoreLogistics(_: any, {}, context: any) {}
+  async getStoreLogistics(_: any, { storeId }, context: any) {
+    var store = await StoreAPI.getMarketplaceStore(storeId)
+    return await StoreAPI.getStoreLogistics(store, {})
+  }
 }
