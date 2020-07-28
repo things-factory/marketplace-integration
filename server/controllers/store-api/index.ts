@@ -56,7 +56,13 @@ export class StoreAPI {
   static createStoreProduct(store, req): any {}
 
   @api
+  static createStoreProductVariations(store, req): any {}
+
+  @api
   static updateStoreProduct(store, req): any {}
+
+  @api
+  static cancelStoreOrder(store, req): any {}
 
   @api
   static deleteStoreProduct(store, req): any {}
