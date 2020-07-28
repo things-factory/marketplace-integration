@@ -35,7 +35,7 @@
     "@things-factory/auth-ui-jwt": "^2.0.0",
     "@things-factory/biz-base": "^2.0.0",
     "@things-factory/context-ui": "^2.0.0",
-    "@things-factory/grist-ui": "^2.0.0",
+    "@things-factory/grist-ui": "^3.0.0-beta",
     "@things-factory/i18n-ui": "^2.0.0",
     "@things-factory/integration-ui": "^2.0.0",
     "@things-factory/more-ui": "^2.0.0",
