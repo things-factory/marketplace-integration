@@ -12,6 +12,7 @@ import { getStoreOrderItem } from './get-store-order-item'
 import { getStoreProductCategories } from './get-store-product-categories'
 import { getStoreProductCategoryAttributes } from './get-store-product-category-attributes'
 import { getStoreProducts } from './get-store-products'
+import { getStoreProductBrands } from './get-store-product-brands'
 import { updateStoreProduct } from './update-store-product'
 
 import { StoreAPI } from '../store-api'
@@ -28,5 +29,6 @@ StoreAPI.registerPlatform('lazada', action, {
   getStoreProductCategoryAttributes,
   getStoreLogistics,
   getStoreProducts,
+  getStoreProductBrands,
   updateStoreProduct
 })

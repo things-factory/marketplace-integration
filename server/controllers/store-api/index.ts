@@ -41,6 +41,9 @@ export class StoreAPI {
   static getStoreProducts(store, req): any {}
 
   @api
+  static getStoreProductBrands(store, req): any {}
+
+  @api
   static getStoreOrders(store, req): any {}
 
   @api
