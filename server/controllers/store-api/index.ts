@@ -51,4 +51,10 @@ export class StoreAPI {
 
   @api
   static getStoreOrderDocument(store, req): any {}
+
+  @api
+  static createStoreProduct(store, req): any {}
+
+  @api
+  static updateStoreProduct(store, req): any {}
 }
