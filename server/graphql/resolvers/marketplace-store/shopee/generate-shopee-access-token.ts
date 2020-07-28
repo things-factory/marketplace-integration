@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm'
-import { MarketplaceStores } from '../../../../entities'
+import { MarketplaceStore } from '../../../../entities'
 import { Shopee } from '../../../../controllers/shopee/shopee'
 
 import { config } from '@things-factory/env'
@@ -8,7 +8,7 @@ const { partnerId, partnerKey, isUAT } = shopeeConfig
 
 export const generateShopeeAccessToken = {
   async generateShopeeAccessToken(_: any, { id, code, shopId }, context: any) {
-    const repository = getRepository(MarketplaceStores)
+    const repository = getRepository(MarketplaceStore)
     const marketplaceStore: any = await repository.findOne({
       where: { domain: context.state.domain, id }
     })

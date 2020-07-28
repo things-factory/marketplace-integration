@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm'
-import { MarketplaceStores } from '../../entities'
+import { MarketplaceStore } from '../../entities'
 import { api } from './decorators'
 
 export class StoreAPI {
@@ -17,7 +17,7 @@ export class StoreAPI {
   }
 
   static async getMarketplaceStore(id) {
-    const repository = getRepository(MarketplaceStores)
+    const repository = getRepository(MarketplaceStore)
     // return await repository.find(id)
     return await repository.findOne({
       where: { id },

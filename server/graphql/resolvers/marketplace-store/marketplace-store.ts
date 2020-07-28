@@ -1,11 +1,11 @@
 import { getRepository } from 'typeorm'
-import { MarketplaceStores } from '../../../entities'
+import { MarketplaceStore } from '../../../entities'
 
 export const marketplaceStoreResolver = {
   async marketplaceStore(_: any, { id }, context: any) {
-    const repository = getRepository(MarketplaceStores)
+    const repository = getRepository(MarketplaceStore)
 
-    return await getRepository(MarketplaceStores).findOne({
+    return await getRepository(MarketplaceStore).findOne({
       where: { domain: context.state.domain, id },
       relations: ['domain', 'creator', 'updater']
     })

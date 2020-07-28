@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm'
-import { MarketplaceStores } from '../../../../entities'
+import { MarketplaceStore } from '../../../../entities'
 import { Lazada } from '../../../../controllers/lazada'
 
 import { config } from '@things-factory/env'
@@ -8,7 +8,7 @@ const { appKey, appSecret } = lazadaConfig
 
 export const generateLazadaAccessToken = {
   async generateLazadaAccessToken(_: any, { id, code }, context: any) {
-    const repository = getRepository(MarketplaceStores)
+    const repository = getRepository(MarketplaceStore)
     const marketplaceStore: any = await repository.findOne({
       where: { domain: context.state.domain, id }
     })

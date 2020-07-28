@@ -1,6 +1,6 @@
 import { Connections, Connector } from '@things-factory/integration-base'
 import { getRepository } from 'typeorm'
-import { MarketplaceStores } from '../../entities'
+import { MarketplaceStore } from '../../entities'
 import { Lazada } from '../../controllers/lazada'
 
 import { config } from '@things-factory/env'
@@ -17,7 +17,7 @@ export class LazadaConnector implements Connector {
   async connect(connection) {
     const { domain, name, endpoint: storeId } = connection
 
-    const repository = getRepository(MarketplaceStores)
+    const repository = getRepository(MarketplaceStore)
     const marketplaceStore: any = await repository.findOne({
       where: { domain, storeId }
     })

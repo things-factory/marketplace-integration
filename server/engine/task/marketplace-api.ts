@@ -1,7 +1,7 @@
 import { Connections, TaskRegistry } from '@things-factory/integration-base'
 import { access } from '@things-factory/utils'
 import { getRepository } from 'typeorm'
-import { MarketplaceStores } from '../../entities'
+import { MarketplaceStore } from '../../entities'
 import { StoreAPI } from '../../controllers/store-api'
 
 async function MarketplaceAPI(step, { logger, data, domain }) {
@@ -19,7 +19,7 @@ async function MarketplaceAPI(step, { logger, data, domain }) {
     throw new Error(`no api defined`)
   }
 
-  const repository = getRepository(MarketplaceStores)
+  const repository = getRepository(MarketplaceStore)
   const marketplaceStore: any = await repository.findOne({
     where: { domain: domain.id, name: store }
   })

@@ -1,5 +1,5 @@
-import { MarketplaceStores } from './marketplace-stores'
+import { MarketplaceStore } from './marketplace-store'
 
-export const entities = [MarketplaceStores]
+export const entities = [MarketplaceStore]
 
-export { MarketplaceStores }
+export { MarketplaceStore }
