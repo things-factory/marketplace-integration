@@ -1,4 +1,3 @@
-import { config } from '@things-factory/env'
 import { StoreAPI } from 'server/controllers/store-api'
 
 export const acceptStoreOrderCancellation = {
