@@ -68,6 +68,12 @@ export class StoreAPI {
   static cancelStoreOrder(store, req): any {}
 
   @api
+  static acceptStoreOrderCancellation(store, req): any {}
+
+  @api
+  static rejectStoreOrderCancellation(store, req): any {}
+
+  @api
   static deleteStoreProduct(store, req): any {}
 
   @api
