@@ -74,6 +74,12 @@ export class StoreAPI {
   static rejectStoreOrderCancellation(store, req): any {}
 
   @api
+  static setStoreOrderStatusReadyToShip(store, req): any {}
+
+  @api
+  static setStoreOrderStatusPackedByMarketplace(store, req): any {}
+
+  @api
   static deleteStoreProduct(store, req): any {}
 
   @api

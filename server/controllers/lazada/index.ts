@@ -8,6 +8,8 @@ import { cancelStoreOrder } from './cancel-store-order'
 import { getStoreOrderDocument } from './get-store-order-document'
 import { getStoreLogistics } from './get-store-logistics'
 import { getStoreOrders } from './get-store-orders'
+import { setStoreOrderStatusReadyToShip } from './set-store-order-status-ready-to-ship'
+import { setStoreOrderStatusPackedByMarketplace } from './set-store-order-status-packed-by-marketplace'
 import { getStoreOrderItem } from './get-store-order-item'
 import { getStoreProductCategories } from './get-store-product-categories'
 import { getStoreProductCategoryAttributes } from './get-store-product-category-attributes'
@@ -23,6 +25,8 @@ StoreAPI.registerPlatform('lazada', action, {
   deleteStoreProduct,
   cancelStoreOrder,
   getStoreOrders,
+  setStoreOrderStatusPackedByMarketplace,
+  setStoreOrderStatusReadyToShip,
   getStoreOrderItem,
   getStoreOrderDocument,
   getStoreProductCategories,
