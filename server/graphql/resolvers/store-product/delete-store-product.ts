@@ -1,5 +1,8 @@
-import { config } from '@things-factory/env'
+import { StoreAPI } from '../../../controllers/store-api'
 
 export const deleteStoreProduct = {
-  async deleteStoreProduct(_: any, {}, context: any) {}
+  async deleteStoreProduct(_: any, { storeId, itemList }, context: any) {
+    var store = await StoreAPI.getMarketplaceStore(storeId)
+    return await StoreAPI.deleteStoreProduct(store, itemList)
+  }
 }
