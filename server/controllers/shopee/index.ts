@@ -6,6 +6,7 @@ import { createStoreProduct } from './create-store-product'
 import { createStoreProductVariations } from './create-store-product-variations'
 import { updateStoreProduct } from './update-store-product'
 import { deleteStoreProduct } from './delete-store-product'
+import { cancelStoreOrder } from './cancel-store-order'
 import { getStoreOrders } from './get-store-orders'
 import { getStoreOrderItem } from './get-store-order-item'
 import { getStoreOrderDocument } from './get-store-order-document'
@@ -23,6 +24,7 @@ StoreAPI.registerPlatform('shopee', action, {
   createStoreProductVariations,
   deleteStoreProduct,
   updateStoreProduct,
+  cancelStoreOrder,
   getStoreOrders,
   getStoreOrderItem,
   getStoreOrderDocument,
