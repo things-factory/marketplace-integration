@@ -57,4 +57,7 @@ export class StoreAPI {
 
   @api
   static updateStoreProduct(store, req): any {}
+
+  @api
+  static deleteStoreProduct(store, req): any {}
 }
