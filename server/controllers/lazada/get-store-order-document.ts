@@ -1,5 +1,6 @@
 export function getStoreOrderDocument() {
   return {
+    method: 'get',
     path: '/order/document/get',
     denormalize(req) {
       var { docType, orderItemId } = req

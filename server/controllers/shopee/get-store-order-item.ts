@@ -2,7 +2,6 @@
 
 export function getStoreOrderItem() {
   return {
-    method: 'get',
     path: '/orders/detail',
     denormalize(req) {
       var { orderId } = req
