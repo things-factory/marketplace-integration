@@ -42,7 +42,7 @@ export function updateStoreProduct() {
         skus
       }
 
-      return ({ ...payload } = payload)
+      return { payload }
     },
     normalize(res) {
       return res
