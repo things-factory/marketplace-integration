@@ -1,6 +1,7 @@
 import fetch from 'node-fetch'
 import { Parameter, Endpoint } from './types'
 import { makeSystemParameters } from './signature'
+import { xmlize } from './xml'
 
 export class Lazada {
   endpoint: string
@@ -74,6 +75,10 @@ export class Lazada {
   }
 
   async post(path: string, payload: Parameter, accessToken?: string) {
+    if ('payload' in payload) {
+      payload.payload = xmlize(payload.payload)
+    }
+
     const body = {
       ...payload,
       ...makeSystemParameters(this.appKey, this.appSecret, path, accessToken || this.accessToken, payload)
