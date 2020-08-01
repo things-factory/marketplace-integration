@@ -20,15 +20,18 @@ export class Shopify {
   }
 
   buildAuthURL(redirectUrl, nonce) {
-    // TODO set accessMode properly https://shopify.dev/tutorials/authenticate-with-oauth#step-2-ask-for-permission
-    var accessMode = 'per-user'
+    // regarding accessMode refer to https://shopify.dev/tutorials/authenticate-with-oauth#step-2-ask-for-permission
+    // and https://community.shopify.com/c/API-Announcements/Shopify-now-offers-two-types-of-API-access-tokens/td-p/315398
+    // so, accessMode should be 'offline'
+    // var accessMode = 'per-user'
+
     // TODO make scopes properly
     var scopes = 'read_products,write_orders,read_customers'
 
     var { shop, apiKey } = this.config
 
-    return `https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUrl}&state=${nonce}&grant_options[]=${accessMode}`
-    // return `https://${storeId}.myshopify.com/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUrl}&state=${nonce}`
+    // return `https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUrl}&state=${nonce}&grant_options[]=${accessMode}`
+    return `https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${apiKey}&scope=${scopes}&redirect_uri=${redirectUrl}&state=${nonce}`
   }
 
   async get(path: string, data: any) {
