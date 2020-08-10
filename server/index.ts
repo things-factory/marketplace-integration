@@ -8,6 +8,7 @@ export * from './graphql'
 import './controllers'
 import './middlewares'
 import './routes'
+import './routers'
 import './engine'
 
 import { Connections, ScenarioEngine } from '@things-factory/integration-base'

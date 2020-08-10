@@ -30,7 +30,7 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
     return {
       id: String,
       marketplaceStore: Object,
-      code: String,
+      accessToken: String,
       storeId: String
     }
   }
@@ -58,8 +58,8 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
       <div>
         <div>
           ${status == 'active'
-            ? html`<button @click=${e => this.deactivate(name)}>disconnect this store</button>`
-            : html`<button @click=${e => this.activate(name)}>connect this store</button>`}
+            ? html`<button @click=${e => this.deactivate(e)}>disconnect this store</button>`
+            : html`<button @click=${e => this.activate(e)}>connect this store</button>`}
         </div>
       </div>
     `
@@ -86,8 +86,8 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
       this.storeId = this.marketplaceStore.storeId
 
       if (location.pathname.endsWith('connect-callback')) {
-        let { code } = changes.params
-        this.code = code
+        let { accessToken } = changes.params
+        this.accessToken = accessToken
 
         await this.handleConnectCallback()
       }
@@ -97,14 +97,13 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
   async getShopifyAuthURL() {
     var response = await client.query({
       query: gql`
-        query($redirectUrl: String!, $nonce: String!, $storeId: String!) {
-          getShopifyAuthURL(storeId: $storeId, nonce: $nonce, redirectUrl: $redirectUrl)
+        query($id: String!, $storeId: String!) {
+          getShopifyAuthURL(id: $id, storeId: $storeId)
         }
       `,
       variables: {
-        storeId: this.storeId,
-        nonce: this.id,
-        redirectUrl: location.origin + '/callback-shopify'
+        id: this.id,
+        storeId: this.storeId
       }
     })
 
@@ -114,18 +113,18 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
   async handleConnectCallback() {
     const response = await client.mutate({
       mutation: gql`
-        mutation($id: String!, $code: String!, $shopId: String!) {
-          generateShopifyAccessToken(id: $id, code: $code, shopId: $shopId) ${MARKETPLACE_STORE_RESULT}
+        mutation($id: String!, $accessToken: String!, $shopId: String!) {
+          saveShopifyAccessToken(id: $id, accessToken: $accessToken, shopId: $shopId) ${MARKETPLACE_STORE_RESULT}
         }
       `,
       variables: {
         id: this.id,
-        code: this.code,
+        accessToken: this.accessToken,
         shopId: this.storeId
       }
     })
 
-    this.marketplaceStore = response.data.generateShopifyAccessToken
+    this.marketplaceStore = response.data.saveShopifyAccessToken
     var { status, name } = this.marketplaceStore
 
     document.dispatchEvent(
@@ -138,7 +137,7 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
     )
   }
 
-  async activate() {
+  async activate(e) {
     if (!this.storeId) {
       document.dispatchEvent(
         new CustomEvent('notify', {
@@ -155,7 +154,7 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
     location.href = await this.getShopifyAuthURL()
   }
 
-  async deactivate() {
+  async deactivate(e) {
     var { name } = this.marketplaceStore
 
     var response = await client.mutate({
@@ -171,7 +170,7 @@ class MarketplaceStoreShopify extends connect(store)(PageView) {
 
     this.marketplaceStore = response.data.deactivateShopifyStore
     var { status } = this.marketplaceStore
-    this.code = ''
+    this.accessToken = ''
 
     document.dispatchEvent(
       new CustomEvent('notify', {

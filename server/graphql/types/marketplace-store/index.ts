@@ -36,9 +36,9 @@ export const Mutation = `
     shopId: String!
   ): MarketplaceStore
 
-  generateShopifyAccessToken (
+  saveShopifyAccessToken (
     id: String!
-    code: String!
+    accessToken: String!
     shopId: String!
   ): MarketplaceStore
 
@@ -80,9 +80,8 @@ export const Query = `
   ): String
   
   getShopifyAuthURL (
+    id: String!
     storeId: String!
-    nonce: String!
-    redirectUrl: String!
   ): String
 `
 

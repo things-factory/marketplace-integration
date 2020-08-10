@@ -31,6 +31,8 @@
     "test": "DEBUG=things-factory:* NODE_ENV=development npx mocha -r ts-node/register ./test/**/*spec.ts"
   },
   "dependencies": {
+    "@shopify/koa-shopify-auth": "^3.1.65",
+    "@shopify/koa-shopify-webhooks": "^2.4.3",
     "@things-factory/apptool-ui": "^2.0.0",
     "@things-factory/auth-ui-jwt": "^2.0.0",
     "@things-factory/biz-base": "^2.0.0",
@@ -43,6 +45,7 @@
     "@things-factory/setting-ui": "^2.0.0",
     "@things-factory/system-ui": "^2.0.0",
     "debug": "^4.1.1",
+    "koa-session": "^6.0.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {

@@ -1,12 +1,19 @@
-import { Shopify } from '../../../../controllers/shopify'
-
-import { config } from '@things-factory/env'
-const shopifyConfig = config.get('marketplaceIntegrationShopify', {})
-const { apiKey, apiSecret } = shopifyConfig
+import { getRepository } from 'typeorm'
+import { MarketplaceStore } from '../../../../entities'
 
 export const getShopifyAuthURL = {
-  async getShopifyAuthURL(_: any, { storeId, nonce, redirectUrl }, context: any) {
-    const shopify = new Shopify({ apiKey, apiSecret, shop: storeId })
-    return shopify.buildAuthURL(redirectUrl, nonce)
+  async getShopifyAuthURL(_: any, { id, storeId }, context: any) {
+    const repository = getRepository(MarketplaceStore)
+    const marketplaceStore: any = await repository.findOne({
+      where: { domain: context.state.domain, id }
+    })
+
+    await repository.save({
+      ...marketplaceStore,
+      storeId,
+      updater: context.state.user
+    })
+
+    return `/shopify/auth?shop=${storeId}.myshopify.com`
   }
 }
